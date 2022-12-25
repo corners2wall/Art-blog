@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.test {
+    background-image: linear-gradient(to right, white , 
+     black);
+    /* background-position: 50% 50%; */
+    background-size: 100%;
+    background-repeat: repeat;
+    background-position: left right;
+    color: white;
+    animation: swapColor 0.5s ease-out forwards
+}
+
+@keyframes swapColor {
+    0% {
+        background-position: top left;
+    }
+    100% {
+        background-position: top right;
+    }
+}
