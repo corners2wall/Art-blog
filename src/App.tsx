@@ -17,6 +17,7 @@ import { motion } from 'framer-motion';
 import Terminal from './screens/Terminal';
 import Preview from './screens/Preview';
 import Navigation from './components/Navigation';
+import Content from './screens/Content';
 
 const images = [Image1, Image2, Image3];
 
@@ -24,8 +25,9 @@ function App() {
   return (
     <div className='min-h-screen flex flex-col bg-black'>
       <Navigation />
-      <main>
+      <main className='flex'>
         <Preview />
+        <Content />
       </main>
       <div className='relative w-full min-h-screen bg-black pt-20'>
         <div className='flex min-w-[50%]'></div>
@@ -73,7 +75,7 @@ function App() {
       {/* <div className='relative w-full min-h-screen bg-black pt-20'>
         <PageScroll />
       </div> */}
-      <div className='relative w-full min-h-screen bg-black pt-20'>
+      {/* <div className='relative w-full min-h-screen bg-black pt-20'>
         <div className='flex min-w-[50%]'>
           <LayoutGroup>
             <Accordion />
@@ -137,8 +139,8 @@ function App() {
           <button type='button' className='pl-1'>
             <DoubleArrow width={26} height={26} className='fill-white' />
           </button>
-        </div>
-      </div>
+      </div> 
+        </div> */}
     </div>
   );
 }

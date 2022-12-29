@@ -1,7 +1,8 @@
-import { motion, Variants } from 'framer-motion';
+import { motion, useAnimationControls, Variants } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import useHover from '../../hooks/useHover';
-import { HOVER_NAVIGATOR } from '../../utils/chanelName';
-import { useEmitEvent } from '../../utils/EventBus';
+import { HOVER_NAVIGATOR, OPEN_TERMINAL } from '../../utils/chanelName';
+import { useEmitEvent, useSubscribe } from '../../utils/EventBus';
 import NavigationButton from './NavigationButton';
 
 const showNavigationByHover: Variants = {
@@ -11,10 +12,16 @@ const showNavigationByHover: Variants = {
       duration: 0.5,
     },
   },
-  animate: {
+  hiddenAnimation: {
     y: '-100%',
     transition: {
-      delay: 1.25,
+      duration: 0.5,
+    },
+  },
+  initialAnimate: {
+    y: '-100%',
+    transition: {
+      delay: 1.5,
       duration: 0.5,
     },
   },
@@ -23,7 +30,32 @@ const showNavigationByHover: Variants = {
 export default function Navigation() {
   const { ref, isHover } = useHover<HTMLDivElement>();
 
-  useEmitEvent(HOVER_NAVIGATOR, [isHover], isHover);
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+
+  const controls = useAnimationControls();
+
+  useSubscribe(
+    OPEN_TERMINAL,
+    ([isOpen]) => {
+      setIsTerminalOpen(isOpen);
+      isOpen && controls.start('hover');
+    },
+    [isTerminalOpen]
+  );
+
+  useSubscribe(
+    HOVER_NAVIGATOR,
+    ([hover]) => {
+      if (!isTerminalOpen) controls.start(hover ? 'hover' : 'hiddenAnimation');
+    },
+    [isTerminalOpen]
+  );
+
+  useEmitEvent(HOVER_NAVIGATOR, [isHover, isTerminalOpen], isTerminalOpen || isHover);
+
+  useEffect(() => {
+    controls.start('initialAnimate');
+  }, []);
 
   return (
     <motion.div
@@ -36,6 +68,7 @@ export default function Navigation() {
       <motion.nav
         layout
         variants={showNavigationByHover}
+        animate={controls}
         className='h-12 w-screen bg-white border flex items-center justify-between px-5'
       >
         <h2 className='text-xl'>TERMINAL™</h2>

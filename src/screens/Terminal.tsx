@@ -1,8 +1,11 @@
 import { Variants, motion } from 'framer-motion';
+import { useState } from 'react';
 import ConsistentTextAnimation, {
   WrapperVariants,
 } from '../components/Animation/ConsistentTextAnimation';
 import CityTime from '../components/CityTime/CityTime';
+import { OPEN_TERMINAL } from '../utils/chanelName';
+import { useEmitEvent } from '../utils/EventBus';
 
 const arrowVariants: Variants = {
   initial: {
@@ -33,6 +36,12 @@ function getDelayAnimation(delay: number): WrapperVariants {
 }
 
 export default function Terminal() {
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+
+  const onClickTerminal = () => setIsTerminalOpen(!isTerminalOpen);
+
+  useEmitEvent(OPEN_TERMINAL, [isTerminalOpen], isTerminalOpen);
+
   return (
     <motion.div
       className='relative w-full pt-20 text-white text-sm flex justify-around'
@@ -47,7 +56,10 @@ export default function Terminal() {
         text='THINKING ABOUT THE FUTURE...'
         wrapperAnimation={getDelayAnimation(4.5)}
       />
-      <motion.div className='flex flex-col overflow-hidden leading-none text-xs'>
+      <motion.div
+        className='flex flex-col overflow-hidden leading-none text-xs'
+        onClick={onClickTerminal}
+      >
         <ConsistentTextAnimation text='ENTER' wrapperAnimation={getDelayAnimation(4)} />
         <motion.div variants={arrowVariants} initial='initial' whileHover='hover'>
           <span>-{'>'}</span>

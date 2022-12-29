@@ -3,7 +3,7 @@ import Terminal from './Terminal';
 import peopleAnimation from '../assets/peopleAnimation.gif';
 import { ReactNode } from 'react';
 import { useSubscribe } from '../utils/EventBus';
-import { HOVER_NAVIGATOR } from '../utils/chanelName';
+import { OPEN_TERMINAL, HOVER_NAVIGATOR } from '../utils/chanelName';
 
 const horizontalAnimation: Variants = {
   initial: {
@@ -120,7 +120,6 @@ const marginAnimation: Variants = {
   base: {
     marginTop: 0,
     transition: {
-      delay: 1.25,
       duration: 0.5,
     },
   },
@@ -135,9 +134,7 @@ const marginAnimation: Variants = {
 export default function Preview() {
   const controls = useAnimationControls();
 
-  useSubscribe(HOVER_NAVIGATOR, ([hover]) => {
-    controls.start(hover ? 'margin' : 'base');
-  });
+  useSubscribe(HOVER_NAVIGATOR, ([hover]) => controls.start(hover ? 'margin' : 'base'));
 
   return (
     <motion.div
@@ -146,7 +143,7 @@ export default function Preview() {
       animate='animate'
       className='
           relative w-full min-h-screen bg-white text-[200px] px-7 leading-none
-          items-center justify-center flex flex-col 
+          flex flex-col basis-[100%] items-center justify-center
           bg-gradient-to-r from-black to-black bg-no-repeat bg-center
         '
     >
