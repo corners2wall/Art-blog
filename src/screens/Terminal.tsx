@@ -6,7 +6,7 @@ import CityTime from '../components/CityTime/CityTime';
 
 const arrowVariants: Variants = {
   initial: {
-    x: -12,
+    x: -10,
   },
   hover: {
     x: 0,
@@ -47,7 +47,7 @@ export default function Terminal() {
         text='THINKING ABOUT THE FUTURE...'
         wrapperAnimation={getDelayAnimation(4.5)}
       />
-      <motion.div className='flex flex-col overflow-hidden'>
+      <motion.div className='flex flex-col overflow-hidden leading-none text-xs'>
         <ConsistentTextAnimation text='ENTER' wrapperAnimation={getDelayAnimation(4)} />
         <motion.div variants={arrowVariants} initial='initial' whileHover='hover'>
           <span>-{'>'}</span>

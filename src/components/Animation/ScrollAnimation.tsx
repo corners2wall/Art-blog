@@ -18,6 +18,7 @@ export default function ScrollAnimation() {
     <motion.div
       variants={variants}
       initial='initial'
+      animate='animate'
       whileInView='view'
       viewport={{ amount: 0.8 }}
       //   viewport={{ once: true }}

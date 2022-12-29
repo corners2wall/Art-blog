@@ -16,25 +16,20 @@ import ConsistentTextAnimation from './components/Animation/ConsistentTextAnimat
 import { motion } from 'framer-motion';
 import Terminal from './screens/Terminal';
 import Preview from './screens/Preview';
+import Navigation from './components/Navigation';
 
 const images = [Image1, Image2, Image3];
-
-const variant: Variants = {
-  initial: {
-    // opacity: 0,
-  },
-  animate: {
-    opacity: [0.1, 0.2, 1, 0.3, 0.4, 1],
-    transition: {
-      times: [0, 0.2, 0.3, 0.4, 0.6, 1],
-      duration: 3,
-    },
-  },
-};
 
 function App() {
   return (
     <div className='min-h-screen flex flex-col bg-black'>
+      <Navigation />
+      <main>
+        <Preview />
+      </main>
+      <div className='relative w-full min-h-screen bg-black pt-20'>
+        <div className='flex min-w-[50%]'></div>
+      </div>
       {/* <div className='relative min-h-screen bg-black pt-20 text-white text-9xl'>
         <motion.span variants={variant} initial='initial' animate='animate'>
           S
@@ -73,11 +68,11 @@ function App() {
         bg-gradient-to-r from-white to-white bg-no-repeat bg-center'
       /> */}
       {/* <Terminal /> */}
-      <Preview />
+      {/* <Preview /> */}
 
-      <div className='relative w-full min-h-screen bg-black pt-20'>
+      {/* <div className='relative w-full min-h-screen bg-black pt-20'>
         <PageScroll />
-      </div>
+      </div> */}
       <div className='relative w-full min-h-screen bg-black pt-20'>
         <div className='flex min-w-[50%]'>
           <LayoutGroup>

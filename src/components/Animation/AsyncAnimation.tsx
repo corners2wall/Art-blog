@@ -1,4 +1,4 @@
-import { motion, useAnimation, Variant } from 'framer-motion';
+import { motion, useAnimation, Variant, Variants } from 'framer-motion';
 import { useEffect } from 'react';
 
 function mock(time: number, passedValue = {}, success = true) {
@@ -22,18 +22,55 @@ const delayAnimation: Variant = {
   opacity: 1,
 };
 
+const hoverAnimation: Variants = {
+  initial: {
+    x: 100,
+    opacity: 0,
+  },
+  hover: {
+    backgroundColor: 'pink',
+    transition: {
+      duration: 1,
+    },
+  },
+};
+
+const offsetYAnimation: Variant = {
+  y: 150,
+  backgroundColor: 'white',
+  transition: {
+    duration: 3,
+  },
+  opacity: 1,
+};
+
 export default function AsyncAnimation() {
   const controls = useAnimation();
 
   useEffect(() => {
-    mock(2000).then(() => controls.start(delayAnimation));
+    // controls.set(hoverAnimation);
+    mock(2000).then(() => {
+      controls.start(delayAnimation);
+      controls.start(offsetYAnimation);
+    });
   }, []);
 
   return (
-    <motion.div
-      initial={{ x: 100, opacity: 0 }}
-      animate={controls}
-      className='h-16 w-16 rounded-full'
-    />
+    <>
+      <motion.div
+        variants={hoverAnimation}
+        initial='initial'
+        animate={controls}
+        whileHover='hover'
+        className='h-16 w-16 rounded-full bg-slate-300'
+      />
+      <motion.div
+        initial='initial'
+        animate={controls}
+        whileHover='hover'
+        className='h-16 w-16 rounded-full bg-slate-300'
+      />
+      123
+    </>
   );
 }
