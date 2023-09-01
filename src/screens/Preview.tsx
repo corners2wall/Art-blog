@@ -3,7 +3,7 @@ import Terminal from './Terminal';
 import peopleAnimation from '../assets/peopleAnimation.gif';
 import { ReactNode } from 'react';
 import { useSubscribe } from '../utils/EventBus';
-import { OPEN_TERMINAL, HOVER_NAVIGATOR } from '../utils/chanelName';
+import { HOVER_NAVIGATOR } from '../utils/chanelName';
 
 const horizontalAnimation: Variants = {
   initial: {
@@ -123,7 +123,7 @@ const marginAnimation: Variants = {
       duration: 0.5,
     },
   },
-  margin: {
+  onHover: {
     marginTop: '3rem',
     transition: {
       duration: 0.5,
@@ -134,7 +134,7 @@ const marginAnimation: Variants = {
 export default function Preview() {
   const controls = useAnimationControls();
 
-  useSubscribe(HOVER_NAVIGATOR, ([hover]) => controls.start(hover ? 'margin' : 'base'));
+  useSubscribe(HOVER_NAVIGATOR, ([hover]) => controls.start(hover ? 'onHover' : 'base'));
 
   return (
     <motion.div
@@ -142,7 +142,8 @@ export default function Preview() {
       initial='initial'
       animate='animate'
       className='
-          relative w-full min-h-screen bg-white text-[200px] px-7 leading-none
+          sticky top-0
+          w-full min-h-screen max-h-screen bg-white text-[200px] px-7 leading-none
           flex flex-col basis-[100%] items-center justify-center
           bg-gradient-to-r from-black to-black bg-no-repeat bg-center
         '
@@ -169,15 +170,11 @@ export default function Preview() {
         >
           <motion.img src={peopleAnimation} className='w-24' />
         </motion.div>
-        {/* <AnimateChar char={<img src={peopleAnimation} className='w-24' />} visibleDelay={2.5} /> */}
-
         <AnimationSpacer className='justify-end'>
           <AnimateChar char='7' visibleDelay={0.6} />
         </AnimationSpacer>
       </AnimateRow>
-      <div className='absolute top-[45%] translate-y-[-50%] text-xs w-3/5'>
-        <Terminal />
-      </div>
+      <Terminal />
     </motion.div>
   );
 }

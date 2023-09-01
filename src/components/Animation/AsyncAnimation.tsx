@@ -1,17 +1,6 @@
 import { motion, useAnimation, Variant, Variants } from 'framer-motion';
 import { useEffect } from 'react';
-
-function mock(time: number, passedValue = {}, success = true) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (success) {
-        resolve(passedValue);
-      }
-
-      reject({ message: 'Error' });
-    }, time);
-  });
-}
+import mock from '../../utils/mock';
 
 const delayAnimation: Variant = {
   x: 450,

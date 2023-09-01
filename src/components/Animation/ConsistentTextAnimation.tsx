@@ -14,7 +14,8 @@ const variants: Variants = {
   },
 };
 
-const wrapperVariants: Variants = {
+const defaultVariants: WrapperVariants = {
+  initial: {},
   animate: {
     transition: {
       staggerChildren: 0.1,
@@ -22,23 +23,23 @@ const wrapperVariants: Variants = {
   },
 };
 
-export type WrapperVariants = Record<'animate' | 'initial', Variant>; //{ animate: Variant; initial: Variant };
+export type WrapperVariants = Record<'animate' | 'initial', Variant>;
 
 interface ConsistentTextAnimationProps {
   text: string;
-  wrapperAnimation: WrapperVariants;
+  wrapperAnimation?: WrapperVariants;
 }
 
 export default function ConsistentTextAnimation({
   text,
-  wrapperAnimation,
+  wrapperAnimation = defaultVariants,
 }: ConsistentTextAnimationProps) {
   const chars = text.split('');
 
   return (
     <motion.div variants={wrapperAnimation} animate='animate' initial='initial'>
       {chars.map((char) => (
-        <motion.span className='text-white' variants={variants} key={char}>
+        <motion.span variants={variants} key={char}>
           {char}
         </motion.span>
       ))}

@@ -1,0 +1,37 @@
+.ToggleButtonGroup {
+    display: flex;
+    border-radius: 25px;
+    border: 1px solid skyblue;
+    position: relative;
+  }
+  
+  .ActivePointer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background-color: rgb(194, 222, 255, 0.5);
+    border: 1px solid skyblue;
+    border-radius: 25px;
+    transition: left 0.3s;
+  }
+  
+  .ToggleButton {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 50%;
+    border-radius: 25px;
+    z-index: 1;
+  }
+  
+
+input {
+    margin: 0 8px;
+    appearance: none;
+  }
+  
+  .Image {
+    margin-right: 10px;
+    width: 16px;
+  }
+  

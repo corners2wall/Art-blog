@@ -7,7 +7,7 @@ import CityTime from '../components/CityTime/CityTime';
 import { OPEN_TERMINAL } from '../utils/chanelName';
 import { useEmitEvent } from '../utils/EventBus';
 
-const arrowVariants: Variants = {
+const arrowAnimationOnHover: Variants = {
   initial: {
     x: -10,
   },
@@ -44,7 +44,9 @@ export default function Terminal() {
 
   return (
     <motion.div
-      className='relative w-full pt-20 text-white text-sm flex justify-around'
+      className='
+      absolute top-[45%] translate-y-[-50%] w-3/5 
+      pt-20 text-white text-sm flex justify-around'
       animate='animate'
       initial='initial'
     >
@@ -61,7 +63,7 @@ export default function Terminal() {
         onClick={onClickTerminal}
       >
         <ConsistentTextAnimation text='ENTER' wrapperAnimation={getDelayAnimation(4)} />
-        <motion.div variants={arrowVariants} initial='initial' whileHover='hover'>
+        <motion.div variants={arrowAnimationOnHover} initial='initial' whileHover='hover'>
           <span>-{'>'}</span>
           <div className='inline-block'>
             <ConsistentTextAnimation text='TERMINAL™' wrapperAnimation={getDelayAnimation(4.5)} />
