@@ -10,13 +10,14 @@ interface CarouselProps {
 export default function Carousel({ images }: CarouselProps) {
   const [ref, carouselApi] = useCarousel({ draggable: true });
 
+  const getNextSlide = () => carouselApi?.scrollNext();
+  const getPrevSlise = () => carouselApi?.scrollPrev();
+
   return (
     <>
       <button
         type='button'
-        onClick={() => {
-          if (carouselApi) carouselApi.scrollPrev();
-        }}
+        onClick={getPrevSlise}
       >
         <Arrow fill='white' height={48} width={48} />
       </button>
@@ -29,9 +30,7 @@ export default function Carousel({ images }: CarouselProps) {
       </Row>
       <button
         type='button'
-        onClick={() => {
-          if (carouselApi) carouselApi.scrollNext();
-        }}
+        onClick={getNextSlide}
       >
         <Arrow fill='white' height={48} width={48} className='rotate-180' />
       </button>

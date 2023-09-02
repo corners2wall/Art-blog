@@ -9,7 +9,7 @@ import { useEmitEvent } from '../utils/EventBus';
 
 const arrowAnimationOnHover: Variants = {
   initial: {
-    x: -10,
+    x: -12,
   },
   hover: {
     x: 0,
@@ -38,7 +38,7 @@ function getDelayAnimation(delay: number): WrapperVariants {
 export default function Terminal() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
 
-  const onClickTerminal = () => setIsTerminalOpen(!isTerminalOpen);
+  const openTerminal = () => setIsTerminalOpen(true);
 
   useEmitEvent(OPEN_TERMINAL, [isTerminalOpen], isTerminalOpen);
 
@@ -59,8 +59,8 @@ export default function Terminal() {
         wrapperAnimation={getDelayAnimation(4.5)}
       />
       <motion.div
-        className='flex flex-col overflow-hidden leading-none text-xs'
-        onClick={onClickTerminal}
+        className='flex flex-col overflow-hidden leading-none text-xs cursor-pointer'
+        onClick={openTerminal}
       >
         <ConsistentTextAnimation text='ENTER' wrapperAnimation={getDelayAnimation(4)} />
         <motion.div variants={arrowAnimationOnHover} initial='initial' whileHover='hover'>

@@ -1,11 +1,11 @@
 import peopleAnimation from '../../assets/peopleAnimation.gif';
 import bg from '../../assets/photoblya.avif';
 
-export default function NoNameComponent() {
+export default function HomeFooter() {
   return (
-    <div className='text-white py-52 relative'>
-      <div className='absolute top-0 left-0 w-full h-full'>
-        <img src={bg} alt='' className='object-cover w-full aspect-[16/5]' />
+    <div className='text-white pt-52 pb-6 relative'>
+      <div className='absolute top-0 left-0 right-0 bottom-0'>
+        <img src={bg} className='object-cover w-full h-full' />
       </div>
       <div className='grid grid-cols-[1fr_auto] relative max-w-[1600px] mx-auto'>
         <div>

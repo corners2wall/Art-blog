@@ -1,7 +1,7 @@
 import { motion, useAnimationControls, Variants } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import useHover from '../../hooks/useHover';
-import { HOVER_NAVIGATOR, OPEN_TERMINAL } from '../../utils/chanelName';
+import { HOVER_NAVIGATION, OPEN_TERMINAL } from '../../utils/chanelName';
 import { useEmitEvent, useSubscribe } from '../../utils/EventBus';
 import NavigationButton from './NavigationButton';
 
@@ -44,29 +44,22 @@ export default function Navigation() {
   );
 
   useSubscribe(
-    HOVER_NAVIGATOR,
+    HOVER_NAVIGATION,
     ([hover]) => {
       if (!isTerminalOpen) controls.start(hover ? 'hover' : 'hiddenAnimation');
     },
     [isTerminalOpen]
   );
 
-  useEmitEvent(HOVER_NAVIGATOR, [isHover, isTerminalOpen], isTerminalOpen || isHover);
+  useEmitEvent(HOVER_NAVIGATION, [isHover, isTerminalOpen], isTerminalOpen || isHover);
 
   useEffect(() => {
     controls.start('initialAnimate');
   }, []);
 
   return (
-    <motion.div
-      className='top-0 z-10 fixed'
-      whileHover='hover'
-      animate='animate'
-      initial='initial'
-      ref={ref}
-    >
+    <motion.div className='top-0 z-10 fixed' ref={ref}>
       <motion.nav
-        layout
         variants={showNavigationByHover}
         animate={controls}
         className='h-12 w-screen bg-white border flex items-center justify-between px-5'

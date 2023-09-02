@@ -1,23 +1,22 @@
 import Preview from './screens/Preview';
 import Navigation from './components/Navigation';
 import Content from './screens/Content';
-import NoNameComponent from './components/NoNameComponent';
-import { useSubscribe } from './utils/EventBus';
-import { DUPLICATE_CONTENT } from './utils/chanelName';
-import React, { useRef, useState } from 'react';
-import ABOBA from './pages/Test';
+import HomeFooter from './components/HomeFooter';
+import { ErrorBoundary } from 'react-error-boundary';
+import fallbackRender from './components/FallbackRender/FallbackRender';
 
 function App() {
   return (
-    <div className='min-h-screen flex flex-col bg-black'>
-      {/* <ABOBA /> */}
-      <Navigation />
-      <main className='flex'>
-        <Preview />
-        <Content />
-      </main>
-      <NoNameComponent />
-    </div>
+    <ErrorBoundary fallbackRender={fallbackRender}>
+      <div className='min-h-screen flex flex-col bg-black'>
+        <Navigation />
+        <main className='flex'>
+          <Preview />
+          <Content />
+        </main>
+        <HomeFooter />
+      </div>
+    </ErrorBoundary>
   );
 }
 

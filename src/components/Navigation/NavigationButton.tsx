@@ -1,10 +1,10 @@
 import { motion, Variants } from 'framer-motion';
 
-const offsetAnimationByHover: Variants = {
+const offsetButtonAnimation: Variants = {
   initial: {
     x: -10,
   },
-  hoverNavigationButton: {
+  hover: {
     x: 0,
     transition: {
       duration: 0.2,
@@ -12,11 +12,11 @@ const offsetAnimationByHover: Variants = {
   },
 };
 
-const visibilityAnimationByHover: Variants = {
+const ArrowAnimation: Variants = {
   initial: {
     opacity: 0,
   },
-  hoverNavigationButton: {
+  hover: {
     opacity: 1,
     transition: {
       duration: 0.4,
@@ -35,11 +35,11 @@ export default function NavigationButton({ label, onClick }: NavigationButtonPro
       onClick={onClick}
       type='button'
       className='text-sm mx-2 overflow-hidden uppercase'
-      variants={offsetAnimationByHover}
+      variants={offsetButtonAnimation}
       initial='initial'
-      whileHover='hoverNavigationButton'
+      whileHover='hover'
     >
-      <motion.span variants={visibilityAnimationByHover}>&#x2794;</motion.span>
+      <motion.span variants={ArrowAnimation}>&#x2794;</motion.span>
       {label}
     </motion.button>
   );

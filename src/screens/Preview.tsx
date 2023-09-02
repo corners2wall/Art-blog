@@ -3,22 +3,80 @@ import Terminal from './Terminal';
 import peopleAnimation from '../assets/peopleAnimation.gif';
 import { ReactNode } from 'react';
 import { useSubscribe } from '../utils/EventBus';
-import { HOVER_NAVIGATOR } from '../utils/chanelName';
+import { HOVER_NAVIGATION } from '../utils/chanelName';
+
+const rowAnimation: Variants = {
+  animate: (i) => ({
+    flex: [0, i],
+    transition: {
+      duration: 2.5,
+    },
+  }),
+};
+
+interface AnimateRowProps {
+  children: ReactNode;
+  flexBasis?: number;
+}
+
+function AnimateRow({ children, flexBasis }: AnimateRowProps) {
+  return (
+    <motion.div
+      layout
+      className='flex justify-center w-full'
+      variants={rowAnimation}
+      custom={flexBasis}
+      initial='initial'
+      animate='animate'
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+const charVariant: Variants = {
+  animate: (i) => ({
+    opacity: [0, 1],
+    transition: {
+      delay: i,
+    },
+  }),
+};
+
+interface AnimateItemProps {
+  children: ReactNode;
+  visibleDelay: number;
+}
+
+function AnimateItem({ children, visibleDelay }: AnimateItemProps) {
+  return (
+    <motion.div
+      custom={visibleDelay}
+      variants={charVariant}
+      animate='animate'
+      initial='initial'
+      className='text-[10rem] min-w-[1rem]'
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+interface AnimationSpacerProps {
+  children: ReactNode;
+}
 
 const horizontalAnimation: Variants = {
-  initial: {
-    flex: 0,
-  },
   animate: {
-    flex: 1,
+    flex: [0, 1],
     transition: {
       delay: 2,
       duration: 1.5,
     },
   },
-  text: {
-    color: [null, 'white'],
-    opacity: [null, 0.2, 0.4, 0.6, 0.8, 1],
+  textAnimate: {
+    color: ['black', 'white'],
+    opacity: [1, 0.2, 0.4, 0.6, 0.8, 1],
     transition: {
       delay: 2.8,
       duration: 0.6,
@@ -26,90 +84,13 @@ const horizontalAnimation: Variants = {
   },
 };
 
-const backgroundAnimation: Variants = {
-  initial: {
-    backgroundSize: '0% 100%',
-  },
-  animate: {
-    color: [null, 'black'],
-    backgroundSize: [null, '100% 100%'],
-    transition: {
-      delay: 2.2,
-      duration: 1.3,
-    },
-  },
-};
-
-const verticalAnimation: Variants = {
-  initial: {
-    flex: 0,
-  },
-  animate: (i) => ({
-    flex: [null, 0, i],
-    transition: {
-      duration: 2.5,
-    },
-  }),
-};
-
-const charVariant: Variants = {
-  initial: {
-    opacity: 0,
-  },
-  animate: (i) => ({
-    opacity: 1,
-    transition: {
-      delay: i,
-    },
-  }),
-};
-
-interface AnimateRowProps {
-  className?: string;
-  children: ReactNode;
-  flexBasis?: number;
-}
-
-function AnimateRow({ className = '', children, flexBasis }: AnimateRowProps) {
-  return (
-    <motion.div
-      layout
-      className={`flex justify-center w-full ${className}`}
-      variants={verticalAnimation}
-      custom={flexBasis}
-      initial='initial'
-      animate={['animate', 'text']}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-interface AnimateCharProps {
-  char: ReactNode;
-  visibleDelay: number;
-}
-
-function AnimateChar({ char, visibleDelay }: AnimateCharProps) {
-  return (
-    <motion.span custom={visibleDelay} variants={charVariant} animate='animate' initial='initial'>
-      {char}
-    </motion.span>
-  );
-}
-
-interface AnimationSpacerProps {
-  children: ReactNode;
-  className?: string;
-}
-
-function AnimationSpacer({ children, className = '' }: AnimationSpacerProps) {
+function AnimationSpacer({ children }: AnimationSpacerProps) {
   return (
     <motion.div
       variants={horizontalAnimation}
       initial='initial'
-      animate={['animate', 'text']}
-      className={`flex ${className}`}
+      animate={['animate', 'textAnimate']}
+      className={`flex justify-between`}
     >
       {children}
     </motion.div>
@@ -117,7 +98,7 @@ function AnimationSpacer({ children, className = '' }: AnimationSpacerProps) {
 }
 
 const marginAnimation: Variants = {
-  base: {
+  initial: {
     marginTop: 0,
     transition: {
       duration: 0.5,
@@ -131,22 +112,32 @@ const marginAnimation: Variants = {
   },
 };
 
+const backgroundAnimation: Variants = {
+  animate: {
+    color: ['white', 'black'],
+    backgroundSize: ['0% 100%', '100% 100%'],
+    transition: {
+      delay: 2.2,
+      duration: 1.3,
+    },
+  },
+};
+
 export default function Preview() {
   const controls = useAnimationControls();
 
-  useSubscribe(HOVER_NAVIGATOR, ([hover]) => controls.start(hover ? 'onHover' : 'base'));
+  useSubscribe(HOVER_NAVIGATION, ([hover]) => controls.start(hover ? 'onHover' : 'initial'));
 
   return (
     <motion.div
       variants={backgroundAnimation}
-      initial='initial'
       animate='animate'
       className='
           sticky top-0
-          w-full min-h-screen max-h-screen bg-white text-[200px] px-7 leading-none
+          w-full min-h-screen max-h-screen bg-white px-7 leading-none
           flex flex-col basis-[100%] items-center justify-center
           bg-gradient-to-r from-black to-black bg-no-repeat bg-center
-        '
+          '
     >
       <AnimateRow flexBasis={1}>
         <motion.div
@@ -154,25 +145,21 @@ export default function Preview() {
           variants={marginAnimation}
           animate={controls}
         >
-          <AnimationSpacer className='justify-between'>
-            <AnimateChar char='T' visibleDelay={0.2} />
-            <AnimateChar char='2' visibleDelay={0.4} />
+          <AnimationSpacer>
+            <AnimateItem visibleDelay={0.2}>A </AnimateItem>
+            <AnimateItem visibleDelay={0.4}>R </AnimateItem>
           </AnimationSpacer>
         </motion.div>
       </AnimateRow>
-      <AnimateRow>
-        <motion.div
-          custom={2.5}
-          variants={charVariant}
-          className='flex self-center'
-          animate='animate'
-          initial='initial'
-        >
-          <motion.img src={peopleAnimation} className='w-24' />
+      <AnimateRow flexBasis={0}>
+        <motion.div className='flex flex-auto justify-center'>
+          <AnimationSpacer>
+            <AnimateItem visibleDelay={2.5}>
+              <img src={peopleAnimation} className='w-1/2' />
+            </AnimateItem>
+            <AnimateItem visibleDelay={0.6}>T </AnimateItem>
+          </AnimationSpacer>
         </motion.div>
-        <AnimationSpacer className='justify-end'>
-          <AnimateChar char='7' visibleDelay={0.6} />
-        </AnimationSpacer>
       </AnimateRow>
       <Terminal />
     </motion.div>
