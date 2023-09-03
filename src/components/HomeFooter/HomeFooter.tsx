@@ -3,7 +3,7 @@ import bg from '../../assets/photoblya.avif';
 
 export default function HomeFooter() {
   return (
-    <div className='text-white pt-52 pb-6 relative'>
+    <div className='text-white py-52 relative'>
       <div className='absolute top-0 left-0 right-0 bottom-0'>
         <img src={bg} className='object-cover w-full h-full' />
       </div>

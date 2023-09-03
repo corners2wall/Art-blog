@@ -4,6 +4,7 @@ import Content from './screens/Content';
 import HomeFooter from './components/HomeFooter';
 import { ErrorBoundary } from 'react-error-boundary';
 import fallbackRender from './components/FallbackRender/FallbackRender';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Content />
         </main>
         <HomeFooter />
+        <Footer />
       </div>
     </ErrorBoundary>
   );
