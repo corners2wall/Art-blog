@@ -1,43 +1,41 @@
-import { motion, Variant, Variants } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 const charAnimation: Variants = {
-  initial: {
-    opacity: 0,
-    visibility: 'hidden',
-  },
   animate: {
-    opacity: 1,
-    visibility: 'visible',
+    opacity: [0, 1],
+    visibility: ['hidden', 'visible'],
     transition: {
       duration: 0.15,
     },
   },
 };
 
-export type WrapperVariants = Record<'animate' | 'initial', Variant>;
-
-const defaultAnimation: WrapperVariants = {
-  initial: {},
-  animate: {
+export const delayAnimationBeforeChildren: Variants = {
+  animate: (i) => ({
+    opacity: [0, 1],
     transition: {
+      delay: i,
+      when: 'beforeChildren',
       staggerChildren: 0.1,
     },
-  },
+  }),
 };
 
 interface ConsistentTextAnimationProps {
   text: string;
-  wrapperAnimation?: WrapperVariants;
+  delay?: number;
 }
 
-export default function ConsistentTextAnimation({
-  text,
-  wrapperAnimation = defaultAnimation,
-}: ConsistentTextAnimationProps) {
+export default function ConsistentTextAnimation({ text, delay }: ConsistentTextAnimationProps) {
   const chars = text.split('');
 
   return (
-    <motion.div variants={wrapperAnimation} animate='animate' initial='initial'>
+    <motion.div
+      variants={delayAnimationBeforeChildren}
+      custom={delay}
+      animate='animate'
+      className='inline-block'
+    >
       {chars.map((char, index) => (
         <motion.span variants={charAnimation} key={index}>
           {char}

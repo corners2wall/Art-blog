@@ -1,15 +1,15 @@
 import { Variants, motion } from 'framer-motion';
 import { useState } from 'react';
 import ConsistentTextAnimation, {
-  WrapperVariants,
+  delayAnimationBeforeChildren,
 } from '../components/Animation/ConsistentTextAnimation';
 import CityTime from '../components/CityTime/CityTime';
-import { OPEN_TERMINAL } from '../utils/chanelName';
 import { useEmitEvent } from '../utils/EventBus';
+import { OPEN_TERMINAL } from '../utils/chanelName';
 
-const arrowAnimationOnHover: Variants = {
+const arrowAnimation: Variants = {
   initial: {
-    x: -12,
+    x: -13,
   },
   hover: {
     x: 0,
@@ -19,22 +19,6 @@ const arrowAnimationOnHover: Variants = {
   },
 };
 
-function getDelayAnimation(delay: number): WrapperVariants {
-  return {
-    initial: {
-      opacity: 0,
-    },
-    animate: {
-      opacity: 1,
-      transition: {
-        delay,
-        when: 'beforeChildren',
-        staggerChildren: 0.1,
-      },
-    },
-  };
-}
-
 export default function Terminal() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
 
@@ -43,33 +27,27 @@ export default function Terminal() {
   useEmitEvent(OPEN_TERMINAL, [isTerminalOpen], isTerminalOpen);
 
   return (
-    <motion.div
+    <div
       className='
-      absolute top-[45%] translate-y-[-50%] w-3/5 
-      pt-20 text-white text-sm flex justify-around'
-      animate='animate'
-      initial='initial'
+      absolute top-[50%] translate-y-[-50%] w-3/5 
+       text-white text-sm
+      flex justify-around'
     >
-      <motion.div custom={4} variants={getDelayAnimation(3.5)} className='flex flex-col'>
+      <motion.div custom={4} variants={delayAnimationBeforeChildren} className='flex flex-col'>
         <CityTime city='LA' />
         <CityTime city='TYO' />
       </motion.div>
-      <ConsistentTextAnimation
-        text='THINKING ABOUT THE FUTURE...'
-        wrapperAnimation={getDelayAnimation(4.5)}
-      />
-      <motion.div
+      <ConsistentTextAnimation text='THINKING ABOUT THE FUTURE...' delay={4.5} />
+      <div
         className='flex flex-col overflow-hidden leading-none text-xs cursor-pointer'
         onClick={openTerminal}
       >
-        <ConsistentTextAnimation text='ENTER' wrapperAnimation={getDelayAnimation(4)} />
-        <motion.div variants={arrowAnimationOnHover} initial='initial' whileHover='hover'>
+        <ConsistentTextAnimation text='ENTER' delay={4} />
+        <motion.div variants={arrowAnimation} initial='initial' whileHover='hover'>
           <span>-{'>'}</span>
-          <div className='inline-block'>
-            <ConsistentTextAnimation text='TERMINAL™' wrapperAnimation={getDelayAnimation(4.5)} />
-          </div>
+          <ConsistentTextAnimation text='TERMINAL™' delay={4.5} />
         </motion.div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }

@@ -11,23 +11,10 @@ const images = [Image1, Image2, Image3];
 
 const expandAnimation: Variants = {
   initial: {
-    overflow: 'hidden',
     flexBasis: 0,
   },
   animate: {
     flexBasis: '100%',
-    transition: {
-      duration: 1,
-    },
-  },
-};
-
-const contentAnimation: Variants = {
-  initial: {
-    x: '100%',
-  },
-  animate: {
-    x: 0,
     transition: {
       duration: 1,
     },
@@ -41,12 +28,12 @@ export default function Content() {
 
   return (
     <motion.div
-      className='text-black bg-white mt-12'
+      className='text-black bg-white mt-12 overflow-hidden'
       variants={expandAnimation}
       initial='initial'
       animate={controls}
     >
-      <motion.div variants={contentAnimation} animate={controls} className='m-5'>
+      <motion.div className='m-5'>
         <Post
           description='Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem ut sit molestias doloremque'
           tag='BLOG'
