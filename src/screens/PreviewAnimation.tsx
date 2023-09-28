@@ -1,10 +1,11 @@
 import { AnimationProps, Variants, motion, useAnimationControls } from 'framer-motion';
 import { useEffect, PropsWithChildren } from 'react';
-import Terminal from './Terminal';
-import peopleAnimation from '../assets/peopleAnimation.gif';
 import { ReactNode } from 'react';
 import { useSubscribe } from '../utils/EventBus';
 import { HOVER_NAVIGATION } from '../utils/chanelName';
+import getImageUrl from '../utils/getImageUrl';
+
+const peopleAnimationSrc = getImageUrl('peopleAnimation', 'gif');
 
 const rowAnimation: Variants = {
   animate: (i) => ({
@@ -161,7 +162,7 @@ export default function PreviewAnimation({ children }: PropsWithChildren) {
       <AnimateRow>
         <AnimationSpacer>
           <AnimateItem visibleDelay={2.5}>
-            <img src={peopleAnimation} className='w-1/2' />
+            <img src={peopleAnimationSrc} className='w-1/2' />
           </AnimateItem>
           <AnimateItem visibleDelay={0.6}>T </AnimateItem>
         </AnimationSpacer>

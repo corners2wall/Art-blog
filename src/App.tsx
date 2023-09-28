@@ -1,14 +1,11 @@
 import { ErrorBoundary } from 'react-error-boundary';
 import fallbackRender from './components/FallbackRender/FallbackRender';
-import Root from './pages/Root';
-import ReactRouter from 'react-router';
+import Home from './pages/Home';
 
-function App() {
+export default function Application() {
   return (
     <ErrorBoundary fallbackRender={fallbackRender}>
-      <Root />
+      <Home />
     </ErrorBoundary>
   );
 }
-
-export default App;

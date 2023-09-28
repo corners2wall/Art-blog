@@ -1,15 +1,13 @@
 import ConsistentTextAnimation from '../Animation/ConsistentTextAnimation';
 import Carousel from '../Carousel/Carousel';
-import Image1 from '../../assets/1.jpg';
-import Image2 from '../../assets/2.jpg';
-import Image3 from '../../assets/3.jpg';
+import getImageUrl from '../../utils/getImageUrl';
 
 interface PostProps {
   description: string;
   tag: string;
 }
 
-const images = [Image1, Image2, Image3];
+const images = [getImageUrl('1', 'jpg'), getImageUrl('2', 'jpg'), getImageUrl('3', 'jpg')];
 
 export default function Post({ description, tag }: PostProps) {
   return (
