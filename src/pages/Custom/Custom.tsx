@@ -1,42 +1,44 @@
 import getImageUrl from '../../utils/getImageUrl';
-import { PropsWithChildren, forwardRef, useEffect, useRef } from 'react';
+import { PropsWithChildren, useEffect, useRef } from 'react';
 import { motion, useAnimate } from 'framer-motion';
 
 const background = getImageUrl('background', 'jpg');
+
 const getScaleValue = (value: number, scale: number) => value * (1 / (1 - scale));
 
-interface ImageBlockProps {
+interface TileItemProps {
   imageSrc: string;
-  className?: string;
+  targetRef: React.RefObject<HTMLDivElement>;
 }
 
-const ImageBlock = forwardRef<HTMLDivElement, ImageBlockProps>(({ imageSrc, className }, ref) => {
+type TileItem = (props: TileItemProps) => JSX.Element;
+
+function DefaultTileItem({ imageSrc }: TileItemProps) {
   return (
-    <div className={`w-screen h-screen max-h-screen relative ${className}`} ref={ref}>
+    <div className='w-screen h-screen max-h-screen'>
       <img className='w-full h-full object-cover' src={imageSrc} />
     </div>
   );
-});
-
-function ImageRow({ children }: PropsWithChildren) {
-  return <div className='flex gap-5'>{children}</div>;
 }
 
-function TileWrapper({ children }: PropsWithChildren) {
+function TargetTileItem({ imageSrc, targetRef }: TileItemProps) {
   return (
-    <div className='absolute -left-1/2 -top-2/4 flex flex-col items-center gap-5'>{children}</div>
+    <div className={`target w-screen h-screen max-h-screen relative shadow-xl`} ref={targetRef}>
+      <img className='w-full h-full object-cover' src={imageSrc} />
+      <div className='absolute top-0 left-0 w-full h-full shadowTarget' />
+    </div>
   );
 }
 
 // ref: https://www.somefolk.co.uk/
 export default function Custom() {
-  const anchorRef = useRef<HTMLDivElement>(null);
+  const targetRef = useRef<HTMLDivElement>(null);
 
   const [scope, animate] = useAnimate<HTMLDivElement>();
 
   useEffect(() => {
-    if (anchorRef.current) {
-      const { x, width, y } = anchorRef.current.getBoundingClientRect();
+    if (targetRef.current) {
+      const { x, width, y } = targetRef.current.getBoundingClientRect();
 
       const leftOffset = getScaleValue(x, 0.5);
       const topOffset = getScaleValue(y, 0.5);
@@ -52,14 +54,10 @@ export default function Custom() {
         },
         { duration: 2 }
       ).then(() => {
-        anchorRef.current!.animate(
+        animate(
+          '.shadowTarget',
           { boxShadow: 'inset 0px 0px 113px 43px rgba(0,0,0,0.53)' },
-          {
-            duration: 1000,
-            fill: 'forwards',
-            pseudoElement: '::after',
-            easing: 'cubic-bezier(.06,.66,.04,.88)',
-          }
+          { duration: 1.5 }
         );
         animate(
           scope.current,
@@ -73,43 +71,45 @@ export default function Custom() {
     }
   }, []);
 
-  const pseudoShadow = `after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:bottom-0`;
+  const tile = generateTile(8, DefaultTileItem, TargetTileItem);
 
   return (
     <div className='overflow-hidden bg-[#333333]'>
-      <motion.div className='scale-50 min-w-[100vw] min-h-[100vh] origin-top-left	' ref={scope}>
+      <motion.div className='scale-50 w-screen h-screen origin-top-left	' ref={scope}>
         <TileWrapper>
-          <ImageRow>
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-          </ImageRow>
-          <ImageRow>
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} ref={anchorRef} className={pseudoShadow} />
-            <ImageBlock imageSrc={background} />
-          </ImageRow>
-          <ImageRow>
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-            <ImageBlock imageSrc={background} />
-          </ImageRow>
+          {tile.map((tileItems) => (
+            <TileRow>
+              {tileItems.map((TileItem) => (
+                <TileItem imageSrc={background} targetRef={targetRef} />
+              ))}
+            </TileRow>
+          ))}
         </TileWrapper>
       </motion.div>
     </div>
   );
+}
+
+function TileRow({ children }: PropsWithChildren) {
+  return <div className='flex gap-5'>{children}</div>;
+}
+
+function TileWrapper({ children }: PropsWithChildren) {
+  return (
+    <div className='absolute -left-1/2 -top-2/4 flex flex-col items-center gap-5'>{children}</div>
+  );
+}
+
+function generateTile(
+  itemsCount: number,
+  renderDefaultItem: TileItem,
+  renderTargetItem: TileItem
+): TileItem[][] {
+  const mainRow = new Array<TileItem>(itemsCount - 1)
+    .fill(renderDefaultItem)
+    .map((Item, index, arr) => (index === arr.length - 2 ? renderTargetItem : Item));
+
+  const additionalRow = new Array<TileItem>(itemsCount).fill(renderDefaultItem);
+
+  return [additionalRow, mainRow, additionalRow];
 }
