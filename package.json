@@ -12,12 +12,15 @@
     "pre-commit-lint": "yarn lint-staged"
   },
   "dependencies": {
+    "@react-three/fiber": "^8.15.12",
+    "@types/three": "^0.160.0",
     "embla-carousel-react": "^7.0.5",
     "framer-motion": "10.16.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.11",
     "react-router": "^6.4.2",
+    "three": "^0.160.0",
     "vite-plugin-svgr": "^2.4.0"
   },
   "devDependencies": {
