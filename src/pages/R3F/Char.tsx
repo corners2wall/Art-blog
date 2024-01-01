@@ -13,13 +13,15 @@ interface CharProps {
   offsets: number[];
 }
 
+// ToDo: Make sequence animation
+
 export function Char({ font, char, materials, offsets, index, mutate }: CharProps) {
   const fontOptions = {
     font,
     size: 60,
     height: 0,
     bevelEnabled: true,
-    bevelSize: 2,
+    bevelSize: 3,
     bevelOffset: 1,
   };
   const [isAnimationRun, setIsAnimationRun] = useState(false);
@@ -47,7 +49,7 @@ export function Char({ font, char, materials, offsets, index, mutate }: CharProp
   });
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => setIsAnimationRun(true), 125 * index);
+    const timeoutId = setTimeout(() => setIsAnimationRun(true), 2000 + 125 * index);
 
     return () => clearTimeout(timeoutId);
   });

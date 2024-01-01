@@ -1,38 +1,24 @@
-import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import {
-  Canvas,
-  useLoader,
-  Object3DNode,
-  extend,
-  useFrame,
-  NodeProps,
-  useThree,
-} from '@react-three/fiber';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { Canvas, useLoader, extend, useFrame, useThree } from '@react-three/fiber';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
-import {
-  Box3,
-  Group,
-  MeshBasicMaterial,
-  NoToneMapping,
-  Object3DEventMap,
-  Vector2,
-  Vector3,
-} from 'three';
+import { Box3, Group, MeshBasicMaterial, NoToneMapping, Object3DEventMap, Vector3 } from 'three';
 import { Char } from './Char';
 import CustomOrbitControl from '../../utils/CustomOrbitControl';
 
 extend({ TextGeometry, CustomOrbitControl });
 
 function CameraRig() {
-  const cameraFinishPosition = new Vector3(0, 0, 500);
+  const endZPosition = 500;
   const [isCameraAnimationStarted, setIsCameraAnimationStarted] = useState(false);
 
   useFrame(({ camera }) => {
-    if (isCameraAnimationStarted) camera.position.lerp(cameraFinishPosition, 0.1);
+    if (isCameraAnimationStarted) {
+      const { x, y } = camera.position;
+      camera.position.lerp(new Vector3(x, y, endZPosition), 0.1);
+    }
 
-    if (Math.round(camera.position.z) === cameraFinishPosition.z)
-      setIsCameraAnimationStarted(false);
+    if (Math.round(camera.position.z) === endZPosition) setIsCameraAnimationStarted(false);
   });
 
   useEffect(() => {
@@ -44,15 +30,14 @@ function CameraRig() {
   return null;
 }
 
-const target = new Vector2();
-
 interface TextProps {
   word: string;
+  setIsModelsLoaded(v: boolean): void;
 }
 
-function Text({ word }: TextProps) {
+function Text({ word, setIsModelsLoaded }: TextProps) {
   const letters = Array.from(word);
-  const font = useLoader(FontLoader, 'font.json');
+  const font = useLoader(FontLoader, 'fonts/EncodeSans.Typeface.json');
 
   const groupRef = useRef<Group<Object3DEventMap>>(null);
 
@@ -70,6 +55,12 @@ function Text({ word }: TextProps) {
   const addCharWidth = (width: number) => setCharWidth((prevWidth) => prevWidth.concat(width));
 
   useEffect(() => setIsRecalculateOffset(false), [charsWidth]);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => setIsModelsLoaded(true), 500);
+
+    return () => clearTimeout(timerId);
+  }, [isRecalculateOffset]);
 
   useEffect(() => {
     if (groupRef.current) {
@@ -107,19 +98,19 @@ function OrbitControl() {
 
   const ref = useRef();
 
-  useFrame((state) => ref.current.update());
+  useFrame(() => ref.current!.update());
 
   useEffect(() => {
-    const onMouseMove = (e) => {
+    const onMouseMove = (e: MouseEvent) => {
       const x = -0.5 + (1 - e.clientX / gl.domElement.width);
       const y = -0.5 + e.clientY / gl.domElement.height;
 
       const event = {
-        clientX: x * 120,
-        clientY: y * 150,
+        clientX: x * 30,
+        clientY: y * 45,
       };
 
-      ref.current.handleMouseMoveRotate(event);
+      ref.current!.handleMouseMoveRotate(event);
     };
 
     window.addEventListener('mousemove', onMouseMove);
@@ -137,21 +128,18 @@ function OrbitControl() {
   );
 }
 
-export default function R3F() {
+interface R3FProps {
+  setIsModelsLoaded(v: boolean): void;
+}
+
+export default function R3F({ setIsModelsLoaded }: R3FProps) {
   return (
-    <div className='w-screen h-screen'>
-      <Canvas
-        dpr={[2, 2]}
-        gl={{ toneMapping: NoToneMapping }}
-        camera={{ position: [-1, 0, 800], fov: 55 }}
-      >
-        <color attach='background' args={['#192928']} />
-        <CameraRig />
-        <OrbitControl />
-        <Suspense fallback={null}>
-          <Text word='SOMEFOLK' />
-        </Suspense>
-      </Canvas>
-    </div>
+    <Canvas gl={{ toneMapping: NoToneMapping }} camera={{ position: [0, 0, 800], fov: 55 }}>
+      <CameraRig />
+      <OrbitControl />
+      <Suspense>
+        <Text word='SOMEFOLK' setIsModelsLoaded={setIsModelsLoaded} />
+      </Suspense>
+    </Canvas>
   );
 }

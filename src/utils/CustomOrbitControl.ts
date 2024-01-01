@@ -46,7 +46,7 @@ export default class CustomOrbitControl extends EventDispatcher {
     this.enableDamping = false;
     this.dampingFactor = 0.05;
 
-    this.rotateSpeed = 3;
+    this.rotateSpeed = 3.5;
 
     this.zoomToCursor = false;
 

@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: Arges;
+    src: url('fonts/Arges.ttf');
+}
+
+@font-face {
+    font-family: Mori;
+    src: url('fonts/Mori.Extralight.otf');
+}

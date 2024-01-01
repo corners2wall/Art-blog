@@ -21,6 +21,10 @@ module.exports = {
         'hidden-visible': 'hidden-visible 1s ease-in-out infinite',
         resizeToHidden: 'resizeToHidden 9s forwards',
       },
+      fontFamily: {
+        arges: ['Arges', 'sans-serif'],
+        mori: ['Mori', 'sans-serif'],
+      },
     },
   },
   plugins: [],
