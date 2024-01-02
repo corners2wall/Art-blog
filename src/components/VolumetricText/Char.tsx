@@ -1,21 +1,28 @@
 import { useLayoutEffect as useEffect, useRef, useState } from 'react';
 import { Mesh, MeshBasicMaterial } from 'three';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, Object3DNode, extend } from '@react-three/fiber';
 import { Font } from 'three/examples/jsm/loaders/FontLoader';
 import { lerp } from 'three/src/math/MathUtils';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
+
+declare module '@react-three/fiber' {
+  interface ThreeElements {
+    textGeometry: Object3DNode<TextGeometry, typeof TextGeometry>;
+  }
+}
+
+extend({ TextGeometry });
 
 interface CharProps {
   font: Font;
   char: string;
   materials: MeshBasicMaterial[];
   index: number;
-  mutate: (v: number) => any;
+  addCharWidth: (width: number) => void;
   offsets: number[];
 }
 
-// ToDo: Make sequence animation
-
-export function Char({ font, char, materials, offsets, index, mutate }: CharProps) {
+export function Char({ font, char, materials, offsets, index, addCharWidth }: CharProps) {
   const fontOptions = {
     font,
     size: 60,
@@ -55,7 +62,7 @@ export function Char({ font, char, materials, offsets, index, mutate }: CharProp
   });
 
   useEffect(() => {
-    if (ref.current) mutate(ref.current.geometry.boundingBox!.max.x);
+    if (ref.current) addCharWidth(ref.current.geometry.boundingBox!.max.x);
   }, []);
 
   useFrame(() => {

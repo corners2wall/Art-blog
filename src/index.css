@@ -11,3 +11,12 @@
     font-family: Mori;
     src: url('fonts/Mori.Extralight.otf');
 }
+
+:root::-webkit-scrollbar{
+    display: none;
+}
+  
+:root {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}

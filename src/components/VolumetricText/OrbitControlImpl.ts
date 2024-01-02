@@ -1,6 +1,6 @@
 import { Camera, EventDispatcher, Quaternion, Spherical, Vector2, Vector3 } from 'three';
 
-export default class CustomOrbitControl extends EventDispatcher {
+export default class OrbitControlImpl extends EventDispatcher {
   object: THREE.Camera;
   domElement: HTMLElement;
 
@@ -183,18 +183,12 @@ export default class CustomOrbitControl extends EventDispatcher {
     const rotateEnd = new Vector2();
     const rotateDelta = new Vector2();
 
-    let performCursorZoom = false;
-
     function rotateLeft(angle: number) {
       sphericalDelta.theta -= angle;
     }
 
     function rotateUp(angle: number) {
       sphericalDelta.phi -= angle;
-    }
-
-    function clampDistance(dist: number) {
-      return Math.max(scope.minDistance, Math.min(scope.maxDistance, dist));
     }
 
     function handleMouseMoveRotate(event: MouseEvent) {

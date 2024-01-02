@@ -1,11 +1,11 @@
 import { ErrorBoundary } from 'react-error-boundary';
 import fallbackRender from './components/FallbackRender';
-import Custom from './pages/Custom';
+import Somefolk from './pages/Somefolk';
 
 export default function Application() {
   return (
     <ErrorBoundary fallbackRender={fallbackRender}>
-      <Custom />
+      <Somefolk />
     </ErrorBoundary>
   );
 }

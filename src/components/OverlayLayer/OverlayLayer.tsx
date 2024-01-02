@@ -1,33 +1,11 @@
+import { Variants, motion } from 'framer-motion';
+import ScreenWrapper from '../ScreenWrapper';
 import getImageUrl from '../../utils/getImageUrl';
-import { useState } from 'react';
-import R3F from '../R3F';
-import Tile from '../../components/Tile';
-import Row from '../../components/Layouts/Row';
-import { motion, Variants } from 'framer-motion';
-
-const tileImage = getImageUrl('background', 'jpg');
+import Text from '../Text';
 
 const barcode = getImageUrl('barcode', 'svg');
 const founded = getImageUrl('founded', 'svg');
 const address = getImageUrl('address', 'svg');
-
-// ref: https://www.somefolk.co.uk/
-export default function Custom() {
-  const [isModelsLoaded, setIsModelsLoaded] = useState(false);
-  return (
-    <div className='overflow-hidden bg-[#333333] relative w-screen h-screen'>
-      {isModelsLoaded && (
-        <>
-          <Tile image={tileImage} />
-          <Test />
-        </>
-      )}
-      <div className='w-screen h-screen absolute top-0 left-0 '>
-        <R3F setIsModelsLoaded={setIsModelsLoaded} />
-      </div>
-    </div>
-  );
-}
 
 const offsetHover: Variants = {
   hover: {
@@ -64,9 +42,12 @@ const opacityAnimation: Variants = {
   }),
 };
 
-function Test() {
+export default function OverlayLayer() {
   return (
-    <div className='flex flex-col justify-between w-screen h-screen absolute top-0 left-0 text-[#bfea88] p-4 font-arges'>
+    <ScreenWrapper
+      className='flex flex-col justify-between text-[#bfea88] p-4 font-arges z-10'
+      position='absolute'
+    >
       <motion.div
         className='flex justify-between text-lg font-normal'
         variants={opacityAnimation}
@@ -128,38 +109,30 @@ function Test() {
         </div>
         <div className='flex flex-col items-center leading-none'>
           <span className='text-[1.7rem] font-bold pb-1'>WORKING ON PROJECTS FOR</span>
-          <div className='flex gap-4 text-5xl font-black pb-2'>
+          <div className='flex gap-4 text-5xl font-black pb-1'>
             <span>BRAND</span>
             <span>DIRECTION</span>
             <span>DIGITAL</span>
           </div>
-          <div>
-            <div className='flex gap-2 tracking-wide items-center'>
-              <span className='text-lg font-semibold tracking-tight font-mori'>COLLABORATING</span>
-              <span className='text-base tracking-wide'>WITH</span>
-              <span className='text-lg font-semibold tracking-tight font-mori'>
-                AMBITIOUS BRANDS
-              </span>
-              <span className='text-base tracking-wide'>THAT HAVE</span>
-              <span className='text-lg font-semibold tracking-tight font-mori'>
-                POWERFUL STORIES
-              </span>
-              <span className='text-base tracking-wide'>TO TELL</span>
-            </div>
-            <div className='flex gap-2 tracking-wide items-center'>
-              <span className='text-base tracking-wide'>I WORK</span>
-              <span className='text-lg font-semibold tracking-tight font-mori'>INDEPENDENTLY</span>
-              <span className='text-base tracking-wide'>AND WITH CREATIVE</span>
-              <span className='text-lg font-semibold tracking-tight font-mori'>
-                FREELANCERS, STUDIOS
-              </span>
-              <span className='text-base tracking-wide'>AND</span>
-              <span className='text-lg font-semibold tracking-tight font-mori'>AGENCIES</span>
-            </div>
+          <div className='flex gap-2 tracking-wide items-center'>
+            <Text variant='low-bold'>COLLABORATING</Text>
+            <Text variant='low'>WITH</Text>
+            <Text variant='low-bold'>AMBITIOUS BRANDS</Text>
+            <Text variant='low'>THAT HAVE</Text>
+            <Text variant='low-bold'>POWERFUL STORIES</Text>
+            <Text variant='low'>TO TELL</Text>
+          </div>
+          <div className='flex gap-2 tracking-wide items-center'>
+            <Text variant='low'>I WORK</Text>
+            <Text variant='low-bold'>INDEPENDENTLY</Text>
+            <Text variant='low'>AND WITH CREATIVE</Text>
+            <Text variant='low-bold'>FREELANCERS, STUDIOS</Text>
+            <Text variant='low'>AND</Text>
+            <Text variant='low-bold'>AGENCIES</Text>
           </div>
         </div>
         <div className='w-[20%]' />
       </motion.div>
-    </div>
+    </ScreenWrapper>
   );
 }

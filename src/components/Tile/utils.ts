@@ -5,7 +5,6 @@ export function generateTile(
   renderDefaultItem: TileItem,
   renderTargetItem: TileItem
 ): TileItem[][] {
-  debugger;
   const mainRow = new Array<TileItem>(itemsCount - 1)
     .fill(renderDefaultItem)
     .map((Item, index, arr) => (index === arr.length - 2 ? renderTargetItem : Item));
