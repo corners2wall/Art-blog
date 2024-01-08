@@ -155,8 +155,8 @@ export default function PreviewAnimation({ children }: PropsWithChildren) {
     <AnimationWrapper>
       <AnimateRow flexBasis={1} animate={controls} variants={marginAnimation}>
         <AnimationSpacer>
-          <AnimateItem visibleDelay={0.2}>A </AnimateItem>
-          <AnimateItem visibleDelay={0.4}>R </AnimateItem>
+          <AnimateItem visibleDelay={0.15}>A </AnimateItem>
+          <AnimateItem visibleDelay={0.3}>R </AnimateItem>
         </AnimationSpacer>
       </AnimateRow>
       <AnimateRow>
@@ -164,7 +164,7 @@ export default function PreviewAnimation({ children }: PropsWithChildren) {
           <AnimateItem visibleDelay={2.5}>
             <img src={peopleAnimationSrc} className='w-1/2' />
           </AnimateItem>
-          <AnimateItem visibleDelay={0.6}>T </AnimateItem>
+          <AnimateItem visibleDelay={0.45}>T </AnimateItem>
         </AnimationSpacer>
       </AnimateRow>
       {children}

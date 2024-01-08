@@ -25,8 +25,9 @@ module.exports = {
         arges: ['Arges', 'sans-serif'],
         mori: ['Mori', 'sans-serif'],
       },
-      backgroundColor: {
-        somefolk: '#333333',
+      colors: {
+        'olive-100': '#bfea88',
+        'olive-900': '#192928',
       },
     },
   },
