@@ -1,78 +1,45 @@
-type AnimationStatus = 'stop' | 'run';
-
-type ChangeAnimationStatusEvent = CustomEvent<{ animationStatus: AnimationStatus }>;
-
-type AnimationOptions = {
-  duration: number;
-  //   timeFunction:
-};
-
-// I am not sure but I think that It's necessary divided into two class
-// First of them should be control animation
-// Second should be control intersection
-// And maybe third combine first and second. Why not?
-export default class IntersectionAnimation {
-  private id: number;
-  private status: AnimationStatus;
-  private end: number;
-  private start: number;
-  private delta: number;
-  private frameId: number;
-  private static readonly ANIMATION_END = 1;
-
+export default class IntersectionAnimation extends IntersectionObserver {
   constructor() {
-    this.id = 1;
-    this.status = 'stop';
-    this.start = 0;
-    this.end = 0;
-    this.delta = 0;
-    this.frameId = 0;
+    super();
   }
 
-  // we can add this handler on  a setStatus() function
-  private emitChangeAnimationStatusEvent(animationStatus: AnimationStatus) {
-    const event = new CustomEvent(`change-animation-status-${this.id}`, {
-      detail: { animationStatus },
-    });
+  private generateSteps(threshold: number[], endValue: number) {
+    const delta = to / (Array.isArray(threshold) ? threshold.length - 1 : 1);
+    const steps = threshold.map((_, index) => delta * index);
+    // const st
+    steps[0] = 0; // toDo change on initial value
+    steps[steps.length - 1] = endValue;
 
-    // dispatch on window or maybe node?
-    window.dispatchEvent(event);
+    return steps;
   }
 
-  private checkIsAnimationEnd(currentAnimationTime: number) {
-    return currentAnimationTime.toFixed(2) >= IntersectionAnimation.ANIMATION_END.toFixed(2);
+  private static getThresholdValueByIntersectionRatio(
+    threshold: number[],
+    intersectionRation: number
+  ) {
+    const deltaValues = threshold.map((item) => Math.abs(item - intersectionRation));
+
+    const minDeltaValue = Math.min(...deltaValues);
+
+    const index = deltaValues.indexOf(minDeltaValue);
+
+    return threshold[index];
   }
 
-  public animate(cb: any, animationOptions: AnimationOptions) {
-    const { duration } = animationOptions;
-    const startTime = performance.now();
-    let prevFraction = 0;
-    this.status = 'run';
+  private static getIntersectionRatio(threshold: number[], intersectionRatio: number) {
+    if (intersectionRatio === 1) return threshold[threshold.length - 1];
 
-    this.emitChangeAnimationStatusEvent(this.status);
+    if (intersectionRatio === 0) return threshold[0];
 
-    const runAnimationLoop = (currentTime: number) => {
-      const timeFraction = (currentTime - startTime) / duration;
+    return IntersectionAnimation.getThresholdValueByIntersectionRatio(threshold, intersectionRatio);
+  }
 
-      const currentFraction = this.delta * timeFraction;
+  private checkIsTopPageIntersect(entry: IntersectionObserverEntry) {
+    return !!(entry.boundingClientRect.top < 0);
+  }
 
-      const isAnimationEnd = this.checkIsAnimationEnd(currentTime);
-
-      this.start += currentFraction - prevFraction;
-
-      cb(this.start);
-
-      this.frameId = requestAnimationFrame(runAnimationLoop);
-
-      prevFraction = currentFraction;
-
-      if (isAnimationEnd) {
-        cancelAnimationFrame(this.frameId);
-        this.status = 'stop';
-        this.emitChangeAnimationStatusEvent(this.status);
-      }
-    };
-
-    requestAnimationFrame(runAnimationLoop);
+  private checkIsBottomPageIntersect(entry: IntersectionObserverEntry) {
+    // error work when intersectionRatio === 1
+    return entry.boundingClientRect.top > 0;
   }
 }

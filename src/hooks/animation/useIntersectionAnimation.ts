@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
+import Animation from '../../utils/Animation';
 
 export interface IntersectionOptions extends IntersectionObserverInit {
   runningOn: 'top' | 'bottom' | 'always';
@@ -36,6 +37,7 @@ export default function useIntersectionAnimation<T extends Element>(
   const { threshold, root, rootMargin, runningOn } = options;
   const { duration, to } = animationOption;
   const intersectionOptions = { threshold, root, rootMargin };
+  const animation = useMemo(() => new Animation(), []);
 
   // should be pass initial, end value
   const generateSteps = (threshold: number[], endValue: number) => {
@@ -76,54 +78,6 @@ export default function useIntersectionAnimation<T extends Element>(
     return getThresholdValueByIntersectionRatio(threshold, intersectionRatio);
   };
 
-  // Should be pass parameters
-  const animationControl = {
-    animationFrameId: 0,
-    currentValue: 0,
-    endValue: 0,
-    delta: 0,
-    status: 'stop',
-  };
-
-  const endAnimationTime = 1.0;
-
-  const emitAnimationStatus = (status: string) => {
-    const customEvent = new CustomEvent('change-animation-status', {
-      detail: { status },
-    });
-
-    window.dispatchEvent(customEvent);
-  };
-
-  const callbackRafDecorator = (cb: any) => {
-    const start = performance.now();
-    let prevFraction = 0;
-    animationControl.status = 'run';
-    emitAnimationStatus(animationControl.status);
-
-    function animate(time: number) {
-      const timeFraction = (time - start) / duration;
-      const currentFraction = timeFraction * animationControl.delta;
-
-      animationControl.currentValue += currentFraction - prevFraction;
-
-      prevFraction = currentFraction;
-
-      cb(animationControl.currentValue);
-
-      animationControl.animationFrameId = requestAnimationFrame(animate);
-
-      // move to method
-      if (timeFraction.toFixed(2) >= endAnimationTime.toFixed(2)) {
-        cancelAnimationFrame(animationControl.animationFrameId);
-        animationControl.status = 'stop';
-        emitAnimationStatus(animationControl.status);
-      }
-    }
-
-    requestAnimationFrame(animate);
-  };
-
   const steps = generateSteps(threshold, to);
 
   const handleIntersect: IntersectionObserverCallback = (entries) => {
@@ -132,12 +86,12 @@ export default function useIntersectionAnimation<T extends Element>(
 
       const intersectionRatioIndex = threshold.indexOf(intersectionRatio);
 
-      animationControl.endValue = steps[intersectionRatioIndex];
-      animationControl.delta = animationControl.endValue - animationControl.currentValue;
+      animation.setEnd(steps[intersectionRatioIndex]);
 
-      cancelAnimationFrame(animationControl.animationFrameId);
+      cancelAnimationFrame(animation.getFrameId());
 
-      callbackRafDecorator((v: number) => callback(targetRef.current!, v));
+      animation.animate({ duration }, (v: number) => callback(targetRef.current!, v));
+      // callbackRafDecorator((v: number) => callback(targetRef.current!, v));
 
       // if (runningOn === 'top' && isTopIntersect)
       //   callback(targetRef.current, entry.intersectionRatio, animationOption.to);
@@ -161,5 +115,5 @@ export default function useIntersectionAnimation<T extends Element>(
     return () => intersectionObserver.unobserve(targetRef.current!);
   }, []);
 
-  return { targetRef, animationControl };
+  return { targetRef, animation };
 }
