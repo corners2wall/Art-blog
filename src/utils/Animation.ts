@@ -2,8 +2,9 @@ export type AnimationStatus = 'stop' | 'run';
 
 export type ChangeAnimationStatusEvent = CustomEvent<{ animationStatus: AnimationStatus }>;
 
-type AnimationOptions = {
+export type AnimationOptions = {
   duration: number;
+  end: number;
   //   timeFunction:
 };
 
@@ -14,25 +15,15 @@ type AnimationOptions = {
 export default class Animation {
   private id: number;
   private status: AnimationStatus;
-  private end: number;
   private start: number;
   private frameId: number;
   private static readonly fullFraction = 1;
 
   constructor() {
-    this.id = 0;
+    this.id = this.generateId();
     this.status = 'stop';
     this.start = 0;
-    this.end = 0;
     this.frameId = 0;
-  }
-
-  public setEnd(end: number) {
-    this.end = end;
-  }
-
-  public getEnd() {
-    return this.end;
   }
 
   public setStart(start: number) {
@@ -57,9 +48,17 @@ export default class Animation {
     this.emitChangeAnimationStatusEvent(status);
   }
 
-  public stopAnimation() {
+  public stop() {
     cancelAnimationFrame(this.frameId);
     this.setStatus('stop');
+  }
+
+  private generateId() {
+    return new Date().valueOf() * Math.random();
+  }
+
+  public getId() {
+    return this.id;
   }
 
   // maybe it's not needed here
@@ -78,11 +77,12 @@ export default class Animation {
   }
 
   public animate(animationOptions: AnimationOptions, callback?: (value: number) => void) {
-    const { duration } = animationOptions;
+    const { duration, end } = animationOptions;
     const startTime = performance.now();
-    const delta = this.getEnd() - this.getStart();
+    const delta = end - this.getStart();
     let prevFraction = 0;
 
+    this.stop();
     this.setStatus('run');
 
     const runAnimationLoop = (currentTime: number) => {
@@ -99,7 +99,7 @@ export default class Animation {
 
       prevFraction = currentFraction;
 
-      if (isAnimationEnd) this.stopAnimation();
+      if (isAnimationEnd) this.stop();
     };
 
     requestAnimationFrame(runAnimationLoop);

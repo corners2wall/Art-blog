@@ -12,7 +12,7 @@ import IntersectionAnimation, {
 // and related animation should be subscribe on this event
 
 // ToDo googling why we need store value in ref.current instance of variable
-
+// ToDo add observer entity for subscribe, unsubscribe
 export default function useRequestAnimationFrame(
   callback: (value: number) => void,
   animation: IntersectionAnimation
@@ -25,16 +25,18 @@ export default function useRequestAnimationFrame(
   // con
   // check previous status and current
   const changeAnimationStatus = (status: ChangeAnimationStatusEvent) => {
+    console.log({ status: status.detail.animationStatus, state: animationStatus });
     if (animationStatus !== status.detail.animationStatus)
       setAnimationStatus(status.detail.animationStatus);
   };
 
   useEffect(() => {
+    const changeAnimationStatusEvent = `change-animation-status-${animation.getId()}`;
     // ToDo make it event with uniq animation id
-    window.addEventListener('change-animation-status-0', changeAnimationStatus);
+    window.addEventListener(changeAnimationStatusEvent, changeAnimationStatus);
 
-    return () => window.removeEventListener('change-animation-status-0', changeAnimationStatus);
-  });
+    return () => window.removeEventListener(changeAnimationStatusEvent, changeAnimationStatus);
+  }, []);
 
   useEffect(() => {
     const runAnimation = () => {

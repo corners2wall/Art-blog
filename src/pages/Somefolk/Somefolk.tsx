@@ -1,14 +1,13 @@
 import getImageUrl from '../../utils/getImageUrl';
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import VolumetricText from '../../components/VolumetricText';
 import ScreenWrapper from '../../components/ScreenWrapper';
 import OverlayLayer from '../../components/OverlayLayer';
 import useSmoothScroll from '../../hooks/animation/useSmoothScroll';
 import useRequestAnimationFrame from '../../hooks/animation/useRequestAnimationFrame';
-import useIntersectionAnimation, {
-  AnimationOption,
-  IntersectionOptions,
-} from '../../hooks/animation/useIntersectionAnimation';
+import useScrollAnimation from '../../hooks/animation/useScrollAnimation';
+import ScrollAnimation, { IntersectionOptions } from '../../utils/ScrollAnimation';
+import { AnimationOptions } from '../../utils/Animation';
 
 const tileImage = getImageUrl('background', 'jpg');
 
@@ -59,22 +58,17 @@ function Layout() {
 function AnimateTextRow() {
   const intersectionOptions: IntersectionOptions = {
     runningOn: 'bottom',
-    threshold: [0, 0.25, 0.5, 0.75, 1],
+    threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
   };
 
-  const animationOption: AnimationOption = {
-    to: -100,
-    duration: 200,
+  const animationOption: AnimationOptions = {
+    end: -100,
+    duration: 1000,
   };
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const animationCallback = (element: HTMLDivElement, v: any) => {
-    // element.style.opacity = v;
-  };
-
-  const { targetRef, animation } = useIntersectionAnimation(
-    animationCallback,
+  const { targetRef, animation } = useScrollAnimation<HTMLDivElement>(
     intersectionOptions,
     animationOption
   );
@@ -82,6 +76,7 @@ function AnimateTextRow() {
   const showChangeValue = (v: number) => {
     if (ref.current) ref.current.style.transform = `translateY(${v}px)`;
   };
+
   useRequestAnimationFrame(showChangeValue, animation);
 
   return (
@@ -99,21 +94,18 @@ function AnimateTextRow() {
 function AnimateTextRow2() {
   const intersectionOptions: IntersectionOptions = {
     runningOn: 'bottom',
-    threshold: [0, 0.25, 0.5, 0.75, 1],
+    threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
   };
 
-  const animationOption: AnimationOption = {
-    to: 1,
-    duration: 200,
+  const animationOption: AnimationOptions = {
+    end: 1,
+    duration: 1000,
   };
 
-  const animationCallback = (element: HTMLDivElement, v: any) => (element.style.opacity = v);
+  const animationCallback = (node: HTMLDivElement, v: number) =>
+    (node.style.opacity = v.toString());
 
-  const { targetRef } = useIntersectionAnimation(
-    animationCallback,
-    intersectionOptions,
-    animationOption
-  );
+  const { targetRef } = useScrollAnimation(intersectionOptions, animationOption, animationCallback);
 
   return (
     <div ref={targetRef}>
