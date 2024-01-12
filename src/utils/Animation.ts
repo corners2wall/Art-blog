@@ -5,7 +5,7 @@ export type ChangeAnimationStatusEvent = CustomEvent<{ animationStatus: Animatio
 export type AnimationOptions = {
   duration: number;
   end: number;
-  //   timeFunction:
+  timeFunction?: (time: number) => number;
 };
 
 // I am not sure but I think that It's necessary divided into two class
@@ -24,6 +24,8 @@ export default class Animation {
     this.status = 'stop';
     this.start = 0;
     this.frameId = 0;
+
+    this.animate = this.animate.bind(this);
   }
 
   public setStart(start: number) {
@@ -73,11 +75,14 @@ export default class Animation {
   }
 
   private checkIsAnimationEnd(currentAnimationTime: number) {
-    return currentAnimationTime.toFixed(2) >= Animation.fullFraction.toFixed(2);
+    const eps = 0.01;
+    return (currentAnimationTime + eps).toFixed(2) >= Animation.fullFraction.toFixed(2);
   }
 
+  private static linear = (timeFraction: number) => timeFraction;
+
   public animate(animationOptions: AnimationOptions, callback?: (value: number) => void) {
-    const { duration, end } = animationOptions;
+    const { duration, end, timeFunction = Animation.linear } = animationOptions;
     const startTime = performance.now();
     const delta = end - this.getStart();
     let prevFraction = 0;
@@ -86,10 +91,13 @@ export default class Animation {
     this.setStatus('run');
 
     const runAnimationLoop = (currentTime: number) => {
+      // for different time function we need keep current coefficient
+      // looks on dx/dy
       const timeFraction = (currentTime - startTime) / duration;
-      const currentFraction = delta * timeFraction;
+      const currentFraction = delta * timeFunction(timeFraction);
 
       const isAnimationEnd = this.checkIsAnimationEnd(timeFraction);
+      console.log({ timeFraction, currentFraction: currentFraction - prevFraction });
 
       this.start += currentFraction - prevFraction;
 

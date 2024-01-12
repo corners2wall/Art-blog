@@ -25,7 +25,7 @@ export default function useRequestAnimationFrame(
   // con
   // check previous status and current
   const changeAnimationStatus = (status: ChangeAnimationStatusEvent) => {
-    console.log({ status: status.detail.animationStatus, state: animationStatus });
+    // console.log({ status: status.detail.animationStatus, state: animationStatus });
     if (animationStatus !== status.detail.animationStatus)
       setAnimationStatus(status.detail.animationStatus);
   };

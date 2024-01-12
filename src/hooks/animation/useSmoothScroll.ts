@@ -1,47 +1,50 @@
 import { useEffect } from 'react';
 import { lerp } from '../../utils/timeFunctions';
 import { debounce } from '../../utils/debounce';
+import Animation from '../../utils/Animation';
 
 // think about accumulate end
 // hold end in scrollState
 // maybe use throttle instance of debounce?
 
 // ToDo try get logic from useIntersectionAnimation
+const circ = (timeFraction: number) => {
+  return 1 - Math.sin(Math.acos(timeFraction));
+};
+
+type TimingFn = (timeFraction: number) => number;
+
+const makeEaseOut = (timeFn: TimingFn) => (time: number) => 1 - timeFn(1 - time);
+
+const easeOutCirc = circ;
+
 export default function useSmoothScroll() {
   let scrollSpeedCoefficient = 0.75;
-  const scrollState = { start: 0, delta: 0, cancelFrame: 0 };
+  const scrollAnimation = new Animation();
 
-  function updateScroll(end: number) {
-    cancelAnimationFrame(scrollState.cancelFrame);
-    scrollState.delta = 0;
-    const start = performance.now();
+  const debounceUpdateScroll = debounce(scrollAnimation.animate, 100);
 
-    function changeScrollPosition(time: number) {
-      scrollState.start = lerp(scrollState.start, end, 0.05);
-      scrollState.cancelFrame = requestAnimationFrame(changeScrollPosition);
+  const animationCallback = (v: number) => {
+    window.scrollTo(0, v);
+  };
 
-      window.scrollTo(0, scrollState.start);
-
-      if (scrollState.start.toFixed(1) === end.toFixed(1)) {
-        cancelAnimationFrame(scrollState.cancelFrame);
-      }
-    }
-
-    requestAnimationFrame(changeScrollPosition);
-  }
-
-  const debounceUpdateScroll = debounce(updateScroll, 100);
-
-  // store delta value in
   const onWheel = (event: WheelEvent) => {
-    scrollState.delta += event.deltaY * scrollSpeedCoefficient;
+    const currentValue = Math.round(scrollAnimation.getStart());
+    const delta = event.deltaY * scrollSpeedCoefficient;
 
-    debounceUpdateScroll(scrollState.start + scrollState.delta);
+    const isStartPage = currentValue + delta < 0;
+    const isEndPage = currentValue + delta > document.body.offsetHeight;
+
+    let end = currentValue + delta;
+
+    if (isStartPage) end = 0;
+
+    if (isEndPage) end = document.body.offsetHeight;
+
+    scrollAnimation.animate({ end, duration: 1000, timeFunction: easeOutCirc }, animationCallback);
   };
 
-  const resetScroll = () => {
-    scrollState.start = window.scrollY;
-  };
+  const resetScroll = () => scrollAnimation.setStart(window.scrollY);
 
   const preventDefault = (e: Event) => e.preventDefault();
 

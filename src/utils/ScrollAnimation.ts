@@ -110,7 +110,7 @@ export default class ScrollAnimation {
 
         const end = this.steps[intersectionRatioIndex];
 
-        const animationCallbackWithNode = animationCallback.bind(null, entry.target);
+        const animationCallbackWithNode = animationCallback.bind(this, entry.target);
 
         this.animation.animate({ ...animationOptions, end }, animationCallbackWithNode);
       });
