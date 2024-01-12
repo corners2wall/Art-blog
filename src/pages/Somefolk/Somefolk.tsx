@@ -9,6 +9,7 @@ import { IntersectionOptions } from '../../utils/ScrollAnimation';
 import { AnimationOptions } from '../../utils/Animation';
 import Tile from '../../components/Tile';
 import Text from '../../components/Text';
+import Lottie from './Lottie';
 
 const tileImage = getImageUrl('background', 'jpg');
 
@@ -52,6 +53,33 @@ export default function Somefolk() {
           <Text variant='low-bold'>RESULTS</Text>
         </div>
       </AnimatedTextRow>
+      <div className='flex items-center justify-center mt-16 text-5xl font-black'>
+        <div className='flex flex-col items-center'>
+          <Text variant='low'>MEMORABLE</Text>
+          <span>BRAND IDENTITY</span>
+          <span>BRAND STRATEGY</span>
+          <span>TYPOGRAPHY</span>
+        </div>
+        <Lottie className='h-1/2 w-1/2' path='animation.json' />
+        <div className='flex flex-col items-center'>
+          <Text variant='low'>DEVELOPING DIGITAL PRODUCTS</Text>
+          <span>ART DIRECTION</span>
+          <span>DIGITAL DESIGN</span>
+          <span>DEVELOPMENT</span>
+        </div>
+      </div>
+      <div className='flex flex-col tems-center justify-center'>
+        <h2 className='text-[21vw] font-black'>V2.0 (2K23)</h2>
+        <h2 className='font-blackstone text-9xl font-thin	'>by Somefolk</h2>
+        <p>
+          I'M ARTEM, A FREELANCE ART DIRECTOR, VISUAL DESIGNER, CREATIVE DEVELOPER AND HOUSEPLANT
+          ENTHUSIAST BASED IN WINTER RUSSIA. I WORK WITH BRANDS OF ALL SIZES, ACROSS ALL INDUSTRIES,
+          IN EVERY CORNER OF THE WORLD., CREATING MEMORABLE BRANDS AND DIGITAL PRODUCTS THAT
+          RESONATE WITH THEIR AUDIENCE. I BELIEVE THAT STORIES TOLD AUTHENTICALLY & VISUALLY ARE
+          MORE EFFECTIVE AT CAPTIVATING AUDIENCES, EVOKING EMOTION AND IMPROVING CONVERSION ...
+          STORIES TOLD BY SOME REAL FOLK.
+        </p>
+      </div>
       <ScreenWrapper className='bg-somefolk'></ScreenWrapper>
       <ScreenWrapper className='bg-somefolk'></ScreenWrapper>
     </div>

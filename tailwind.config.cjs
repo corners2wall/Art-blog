@@ -24,6 +24,8 @@ module.exports = {
       fontFamily: {
         arges: ['Arges', 'sans-serif'],
         mori: ['Mori', 'sans-serif'],
+        blackstone: ['BlackStone', 'sans-serif'],
+        editorial: ['Editorial', 'sans-serif'],
       },
       colors: {
         'olive-100': '#bfea88',

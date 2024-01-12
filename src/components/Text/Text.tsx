@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 
 const textVariants = {
-  low: 'text-base tracking-wide font-arges',
+  low: 'text-base tracking-wide font-arges font-medium',
   'low-bold': 'text-lg font-semibold tracking-tight font-mori',
 };
 
