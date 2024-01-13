@@ -115,20 +115,20 @@ export default function OverlayLayer() {
             <span>DIGITAL</span>
           </div>
           <div className='flex gap-2 tracking-wide items-center'>
-            <Text variant='low-bold'>COLLABORATING</Text>
+            <Text variant='medium-bold'>COLLABORATING</Text>
             <Text variant='low'>WITH</Text>
-            <Text variant='low-bold'>AMBITIOUS BRANDS</Text>
+            <Text variant='medium-bold'>AMBITIOUS BRANDS</Text>
             <Text variant='low'>THAT HAVE</Text>
-            <Text variant='low-bold'>POWERFUL STORIES</Text>
+            <Text variant='medium-bold'>POWERFUL STORIES</Text>
             <Text variant='low'>TO TELL</Text>
           </div>
           <div className='flex gap-2 tracking-wide items-center'>
             <Text variant='low'>I WORK</Text>
-            <Text variant='low-bold'>INDEPENDENTLY</Text>
+            <Text variant='medium-bold'>INDEPENDENTLY</Text>
             <Text variant='low'>AND WITH CREATIVE</Text>
-            <Text variant='low-bold'>FREELANCERS, STUDIOS</Text>
+            <Text variant='medium-bold'>FREELANCERS, STUDIOS</Text>
             <Text variant='low'>AND</Text>
-            <Text variant='low-bold'>AGENCIES</Text>
+            <Text variant='medium-bold'>AGENCIES</Text>
           </div>
         </div>
         <div className='w-[20%]' />

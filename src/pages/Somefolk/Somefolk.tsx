@@ -37,20 +37,20 @@ export default function Somefolk() {
           TELLING MEANINGFUL STORIES THAT NEED TO BE TOLD (BY HUMANS, NOT AI)
         </h3>
         <div className='flex gap-2 tracking-wide items-center'>
-          <Text variant='low-bold'>WORKING</Text>
+          <Text variant='medium-bold'>WORKING</Text>
           <Text variant='low'>WITH</Text>
-          <Text variant='low-bold'>PASSIONATE PEOPLE</Text>
+          <Text variant='medium-bold'>PASSIONATE PEOPLE</Text>
           <Text variant='low'>&</Text>
-          <Text variant='low-bold'>DISRUPTORS</Text>
+          <Text variant='medium-bold'>DISRUPTORS</Text>
           <Text variant='low'>TO CREATE</Text>
         </div>
         <div className='flex gap-2 tracking-wide items-center'>
           <Text variant='low'>MEMORABLE</Text>
-          <Text variant='low-bold'>BRANDS</Text>
+          <Text variant='medium-bold'>BRANDS</Text>
           <Text variant='low'>& CAPTIVATING</Text>
-          <Text variant='low-bold'>DIGITAL EXPERIENCES</Text>
+          <Text variant='medium-bold'>DIGITAL EXPERIENCES</Text>
           <Text variant='low'>THAT DELIVER</Text>
-          <Text variant='low-bold'>RESULTS</Text>
+          <Text variant='medium-bold'>RESULTS</Text>
         </div>
       </AnimatedTextRow>
       <div className='flex items-center justify-center mt-16 text-5xl font-black'>
@@ -68,17 +68,27 @@ export default function Somefolk() {
           <span>DEVELOPMENT</span>
         </div>
       </div>
-      <div className='flex flex-col tems-center justify-center'>
-        <h2 className='text-[21vw] font-black'>V2.0 (2K23)</h2>
-        <h2 className='font-blackstone text-9xl font-thin	'>by Somefolk</h2>
-        <p>
+      <div className='flex flex-col items-center'>
+        <Text variant='large' as='h2'>
+          V2.0 (2K23)
+        </Text>
+        <h2 className='font-blackstone text-8xl font-thin	pb-8'>by Somefolk</h2>
+        <Text variant='low-bold' as='p' className='w-1/2 pb-12 text-center'>
           I'M ARTEM, A FREELANCE ART DIRECTOR, VISUAL DESIGNER, CREATIVE DEVELOPER AND HOUSEPLANT
           ENTHUSIAST BASED IN WINTER RUSSIA. I WORK WITH BRANDS OF ALL SIZES, ACROSS ALL INDUSTRIES,
           IN EVERY CORNER OF THE WORLD., CREATING MEMORABLE BRANDS AND DIGITAL PRODUCTS THAT
           RESONATE WITH THEIR AUDIENCE. I BELIEVE THAT STORIES TOLD AUTHENTICALLY & VISUALLY ARE
           MORE EFFECTIVE AT CAPTIVATING AUDIENCES, EVOKING EMOTION AND IMPROVING CONVERSION ...
           STORIES TOLD BY SOME REAL FOLK.
-        </p>
+        </Text>
+        <Text variant='low-bold' as='p' className='pb-4'>
+          SOMEFOLK® BESPOKE QUALITY DIGITAL GOODS
+        </Text>
+        <Text variant='low' as='p' className='pb-12'>
+          SUMMER CLUB | RYAZAN | RUSSIA
+        </Text>
+        <a className='text-3xl cursor-pointer pb-36'>MORE ABOUT ME</a>
+        <h2 className='text-[45vw] leading-[40vw] font-arges'>WORK</h2>
       </div>
       <ScreenWrapper className='bg-somefolk'></ScreenWrapper>
       <ScreenWrapper className='bg-somefolk'></ScreenWrapper>
@@ -88,20 +98,22 @@ export default function Somefolk() {
 
 function Layout() {
   return (
-    <div className='p-[1vw] h-auto leading-none mt-6 font-black'>
+    <div className='pl-[1vw] h-auto leading-none mt-6 font-black'>
       <AnimatedTextRow>
-        <h2 className='text-[21vw]'>RUSSIA</h2>
-        <div className='w-[8vw] h-[1vw] bg-olive-100 mx-[0.5vw] mb-[4.5vw]' />
-        <h2 className='text-[21vw]'>BASED</h2>
-        <h2 className='text-[21vw] ml-[3.5vw]'>ART</h2>
+        <Text variant='extra-large'>RUSSIA</Text>
+        <div className='w-[8vw] h-[0.5vw] bg-olive-100 mx-[1vw] mb-[2.5vw]' />
+        <Text variant='extra-large'>BASED</Text>
+        <Text variant='extra-large' className='ml-[3.5vw]'>
+          ART
+        </Text>
       </AnimatedTextRow>
       <AnimatedTextRow>
-        <h2 className='text-[21vw]'>DIRECTOR</h2>
-        <div className='w-[1vw] h-[10vw] bg-olive-100 mx-[2vw] mb-[4.5vw]' />
-        <h2 className='text-[21vw]'>DESIGNER</h2>
+        <Text variant='extra-large'>DIRECTOR</Text>
+        <div className='w-[0.5vw] h-[10vw] bg-olive-100 mx-[3vw] mb-[2.5vw]' />
+        <Text variant='extra-large'>DESIGNER</Text>
       </AnimatedTextRow>
       <AnimatedTextRow>
-        <h2 className='text-[20vw]'>CREATIVE DEVELOPER</h2>
+        <Text variant='extra-large'>CREATIVE DEVELOPER</Text>
       </AnimatedTextRow>
     </div>
   );

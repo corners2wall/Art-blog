@@ -1,0 +1,37 @@
+.low {
+    letter-spacing: 0;
+    font-family: Editorial, sans-serif;
+    font-size: .7vw;
+    font-weight: 200;
+    line-height: .95vw;
+}
+
+.low-bold {
+    letter-spacing: -.05vw;
+    font-family: Mori, sans-serif;
+    font-size: .8vw;
+    font-weight: 300;
+    line-height: 1vw;
+}
+
+.medium-bold {
+    letter-spacing: -.04vw;
+    font-family: Mori, sans-serif;
+    font-size: 1.05vw;
+    font-weight: 300;
+    line-height: 1.1vw;
+}
+
+.extra-large {
+    font-family: Arges, sans-serif;
+    font-size: 21vw;
+    font-weight: 700;
+    line-height: 20vw;
+}
+
+.large {
+    font-family: Arges, sans-serif;
+    font-size: 17vw;
+    font-weight: 700;
+    line-height: 16vw;
+}

@@ -1,15 +1,15 @@
-import { PropsWithChildren } from 'react';
+import { ElementType, PropsWithChildren } from 'react';
+import './style.css';
 
-const textVariants = {
-  low: 'text-base tracking-wide font-arges font-medium',
-  'low-bold': 'text-lg font-semibold tracking-tight font-mori',
-};
+type TextVariant = 'low' | 'low-bold' | 'medium-bold' | 'extra-large' | 'large';
 
 interface TextProps extends PropsWithChildren {
-  variant: keyof typeof textVariants;
+  variant: TextVariant;
   text?: string;
+  as?: ElementType;
+  className?: string;
 }
 
-export default function Text({ variant, text, children }: TextProps) {
-  return <span className={textVariants[variant]}>{text || children}</span>;
+export default function Text({ variant, text, children, as: Tag = 'span', className }: TextProps) {
+  return <Tag className={`${variant} ${className}`}>{text || children}</Tag>;
 }
