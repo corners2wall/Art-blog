@@ -1,7 +1,14 @@
 import { ElementType, PropsWithChildren } from 'react';
 import './style.css';
-
-type TextVariant = 'low' | 'low-bold' | 'medium-bold' | 'extra-large' | 'large';
+type TextVariant =
+  | 'small'
+  | 'small-bold'
+  | 'medium'
+  | 'medium-bold'
+  | 'medium-title'
+  | 'medium-large'
+  | 'large'
+  | 'extra-large';
 
 interface TextProps extends PropsWithChildren {
   variant: TextVariant;

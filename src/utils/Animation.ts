@@ -97,7 +97,6 @@ export default class Animation {
       const currentFraction = delta * timeFunction(timeFraction);
 
       const isAnimationEnd = this.checkIsAnimationEnd(timeFraction);
-      console.log({ timeFraction, currentFraction: currentFraction - prevFraction });
 
       this.start += currentFraction - prevFraction;
 

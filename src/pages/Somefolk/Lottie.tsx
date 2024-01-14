@@ -1,12 +1,12 @@
-import LottieWeb, { AnimationItem } from 'lottie-web';
+import LottieWeb, { AnimationConfig, AnimationConfigWithPath, AnimationItem } from 'lottie-web';
 import { useEffect, useRef, useState } from 'react';
 
-interface LottieProps {
+interface LottieProps extends Omit<AnimationConfig, 'container'> {
   path: string;
   className?: string;
 }
 
-export default function Lottie({ path, className }: LottieProps) {
+export default function Lottie({ className, ...animationConfig }: LottieProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [animation, setAnimation] = useState<AnimationItem>();
   let isFirstRender = true;
@@ -17,10 +17,7 @@ export default function Lottie({ path, className }: LottieProps) {
 
       const lottie = LottieWeb.loadAnimation({
         container: ref.current,
-        renderer: 'svg',
-        loop: false,
-        autoplay: false,
-        path,
+        ...animationConfig,
       });
 
       setAnimation(lottie);

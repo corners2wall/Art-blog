@@ -1,4 +1,4 @@
-.low {
+.small {
     letter-spacing: 0;
     font-family: Editorial, sans-serif;
     font-size: .7vw;
@@ -6,12 +6,20 @@
     line-height: .95vw;
 }
 
-.low-bold {
+.small-bold {
     letter-spacing: -.05vw;
     font-family: Mori, sans-serif;
     font-size: .8vw;
     font-weight: 300;
     line-height: 1vw;
+}
+
+.medium {
+    letter-spacing: .03vw;
+    font-family: Arges, sans-serif;
+    font-size: 3.7vw;
+    font-weight: 700;
+    line-height: 3.2vw;
 }
 
 .medium-bold {
@@ -22,11 +30,18 @@
     line-height: 1.1vw;
 }
 
-.extra-large {
+.medium-title {
     font-family: Arges, sans-serif;
-    font-size: 21vw;
+    font-size: 7vw;
     font-weight: 700;
-    line-height: 20vw;
+    line-height: 6.2vw;
+}
+
+.medium-large {
+    font-family: Arges, sans-serif;
+    font-size: 12.5vw;
+    font-weight: 700;
+    line-height: 10.4vw;
 }
 
 .large {
@@ -34,4 +49,11 @@
     font-size: 17vw;
     font-weight: 700;
     line-height: 16vw;
+}
+
+.extra-large {
+    font-family: Arges, sans-serif;
+    font-size: 21vw;
+    font-weight: 700;
+    line-height: 20vw;
 }

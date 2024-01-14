@@ -661,6 +661,11 @@
     estree-walker "^2.0.2"
     picomatch "^2.3.1"
 
+"@studio-freight/lenis@^1.0.33":
+  version "1.0.33"
+  resolved "https://registry.yarnpkg.com/@studio-freight/lenis/-/lenis-1.0.33.tgz#7aeb883c820505e25b25e9337c5b12ac356ed1c9"
+  integrity sha512-Pfoimwwsf8oVuneQg3KoigUDlo1S+rE+m2Tz7b+zMNAEi0UAhox+PG/ksLHa8ktQhlsuWODeQFCl8VHBxqOtfw==
+
 "@svgr/babel-plugin-add-jsx-attribute@^6.5.1":
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-6.5.1.tgz#74a5d648bd0347bda99d82409d87b8ca80b9a1ba"

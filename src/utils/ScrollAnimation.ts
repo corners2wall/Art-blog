@@ -29,6 +29,7 @@ export default class ScrollAnimation {
     animationCallback?: (node: Element, value: number) => void
   ) {
     const intersectionObserverCallback = this.getIntersectionObserverCallback(
+      intersectionOption,
       animationOptions,
       animationCallback
     );
@@ -84,21 +85,31 @@ export default class ScrollAnimation {
     return threshold[index];
   }
 
-  private checkIsTopPageIntersect(entry: IntersectionObserverEntry) {
-    return !!(entry.boundingClientRect.top < 0);
+  private static checkIsTopPageIntersect(entry: IntersectionObserverEntry) {
+    const clientTop = entry.boundingClientRect.top;
+    const bottom = window.innerHeight;
+    const top = 0;
+
+    return Math.abs(clientTop - top) < Math.abs(clientTop - bottom);
   }
 
-  private checkIsBottomPageIntersect(entry: IntersectionObserverEntry) {
-    // error work when intersectionRatio === 1
-    return entry.boundingClientRect.top > 0;
+  private static checkIsBottomPageIntersect(entry: IntersectionObserverEntry) {
+    const clientTop = entry.boundingClientRect.top;
+    const bottom = window.innerHeight;
+    const top = 0;
+
+    return Math.abs(clientTop - top) > Math.abs(clientTop - bottom);
   }
 
   private static callbackStab = (node: Element, value: number) => {};
 
   private getIntersectionObserverCallback(
+    intersectionOption: IntersectionOptions,
     animationOptions: AnimationOptions,
     animationCallback = ScrollAnimation.callbackStab
   ) {
+    const { runningOn } = intersectionOption;
+
     const callback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         const intersectionRatio = ScrollAnimation.getIntersectionRatio(
@@ -106,13 +117,26 @@ export default class ScrollAnimation {
           entry.intersectionRatio
         );
 
+        const isBottomIntersect =
+          ScrollAnimation.checkIsBottomPageIntersect(entry) && runningOn === 'bottom';
+
+        const isTopIntersect =
+          ScrollAnimation.checkIsTopPageIntersect(entry) && runningOn === 'top';
+
         const intersectionRatioIndex = this.threshold.indexOf(intersectionRatio);
 
         const end = this.steps[intersectionRatioIndex];
 
         const animationCallbackWithNode = animationCallback.bind(this, entry.target);
 
-        this.animation.animate({ ...animationOptions, end }, animationCallbackWithNode);
+        if (runningOn === 'always')
+          this.animation.animate({ ...animationOptions, end }, animationCallbackWithNode);
+
+        if (isTopIntersect)
+          this.animation.animate({ ...animationOptions, end }, animationCallbackWithNode);
+
+        if (isBottomIntersect)
+          this.animation.animate({ ...animationOptions, end }, animationCallbackWithNode);
       });
     };
 
