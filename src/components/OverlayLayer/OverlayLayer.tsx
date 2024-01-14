@@ -116,18 +116,18 @@ export default function OverlayLayer() {
           </div>
           <div className='flex gap-2 tracking-wide items-center'>
             <Text variant='medium-bold'>COLLABORATING</Text>
-            <Text variant='low'>WITH</Text>
+            <Text variant='small'>WITH</Text>
             <Text variant='medium-bold'>AMBITIOUS BRANDS</Text>
-            <Text variant='low'>THAT HAVE</Text>
+            <Text variant='small'>THAT HAVE</Text>
             <Text variant='medium-bold'>POWERFUL STORIES</Text>
-            <Text variant='low'>TO TELL</Text>
+            <Text variant='small'>TO TELL</Text>
           </div>
           <div className='flex gap-2 tracking-wide items-center'>
-            <Text variant='low'>I WORK</Text>
+            <Text variant='small'>I WORK</Text>
             <Text variant='medium-bold'>INDEPENDENTLY</Text>
-            <Text variant='low'>AND WITH CREATIVE</Text>
+            <Text variant='small'>AND WITH CREATIVE</Text>
             <Text variant='medium-bold'>FREELANCERS, STUDIOS</Text>
-            <Text variant='low'>AND</Text>
+            <Text variant='small'>AND</Text>
             <Text variant='medium-bold'>AGENCIES</Text>
           </div>
         </div>

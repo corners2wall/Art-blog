@@ -1,19 +1,15 @@
 import getImageUrl from '../../utils/getImageUrl';
-import { PropsWithChildren, useRef, useState } from 'react';
+import { useState } from 'react';
 import VolumetricText from '../../components/VolumetricText';
 import ScreenWrapper from '../../components/ScreenWrapper';
 import OverlayLayer from '../../components/OverlayLayer';
-import useRequestAnimationFrame from '../../hooks/animation/useRequestAnimationFrame';
-import useScrollAnimation from '../../hooks/animation/useScrollAnimation';
-import { IntersectionOptions } from '../../utils/ScrollAnimation';
-import { AnimationOptions } from '../../utils/Animation';
 import Tile from '../../components/Tile';
 import Text from '../../components/Text';
 import Lottie from './Lottie';
+import AnimatedTextRow from '../../components/Animation/AnimatedTextRow';
 
 const tileImage = getImageUrl('background', 'jpg');
 
-// ref: https://www.somefolk.co.uk/
 export default function Somefolk() {
   const [isModelsLoaded, setIsModelsLoaded] = useState(false);
 
@@ -22,7 +18,7 @@ export default function Somefolk() {
       <ScreenWrapper className='overflow-hidden'>
         {isModelsLoaded && (
           <>
-            {/* <Tile image={tileImage} /> */}
+            <Tile image={tileImage} />
             <OverlayLayer />
           </>
         )}
@@ -76,7 +72,7 @@ export default function Somefolk() {
           <Text variant='medium'>BRAND STRATEGY</Text>
           <Text variant='medium'>TYPOGRAPHY</Text>
         </div>
-        <Lottie className='h-1/2 w-1/2' path='public/lottie/fallingMan.json' />
+        <Lottie className='h-1/2 w-1/2' path='/lottie/fallingMan.json' />
         <div className='flex flex-col items-center'>
           <Text variant='small-bold'>DEVELOPING DIGITAL PRODUCTS</Text>
           <Text variant='medium'>ART DIRECTION</Text>
@@ -123,7 +119,7 @@ export default function Somefolk() {
         <Text variant='medium-large' as='h2' className='mt-[18vh]'>
           WORKING WITH STARTUPS & SMES TO CREATE MEMORABLE BRANDS
         </Text>
-        <Lottie className='h-1/3 w-1/2 mt-[-8vw]' path='public/lottie/walkingMan.json' autoplay />
+        <Lottie className='h-1/3 w-1/2 mt-[-8vw]' path='/lottie/walkingMan.json' autoplay />
         <Text variant='medium-large' as='h2' className='mt-[-3.5vh]'>
           & HIGHLY BESPOKE WEBSITES
         </Text>
@@ -161,46 +157,6 @@ export default function Somefolk() {
       </section>
       <ScreenWrapper className='bg-somefolk'></ScreenWrapper>
       <ScreenWrapper className='bg-somefolk'></ScreenWrapper>
-    </div>
-  );
-}
-
-type AnimatedTextRowProps = PropsWithChildren & {
-  containerClassName?: string;
-};
-
-function AnimatedTextRow({ children, containerClassName }: AnimatedTextRowProps) {
-  const intersectionOptions: IntersectionOptions = {
-    runningOn: 'bottom',
-    threshold: [0.5, 0.6, 0.7, 0.8, 0.9, 1],
-  };
-
-  const animationOption: AnimationOptions = {
-    end: -15,
-    duration: 500,
-  };
-
-  const ref = useRef<HTMLDivElement>(null);
-
-  const { targetRef, animation } = useScrollAnimation<HTMLDivElement>(
-    intersectionOptions,
-    animationOption
-  );
-
-  const showChangeValue = (v: number) => {
-    if (ref.current) ref.current.style.transform = `translateY(${v}px)`;
-  };
-
-  useRequestAnimationFrame(showChangeValue, animation);
-
-  return (
-    <div ref={targetRef}>
-      <div
-        className={`flex items-center mb-[-4.5vw] tracking-[0.05vw] ${containerClassName}`}
-        ref={ref}
-      >
-        {children}
-      </div>
     </div>
   );
 }

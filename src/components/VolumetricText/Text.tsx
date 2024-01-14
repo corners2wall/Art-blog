@@ -11,7 +11,7 @@ interface TextProps {
 
 export default function Text({ word, setIsModelsLoaded }: TextProps) {
   const letters = Array.from(word);
-  const font = useLoader(FontLoader, 'fonts/EncodeSans.Typeface.json');
+  const font = useLoader(FontLoader, '/fonts/EncodeSans.Typeface.json');
 
   const groupRef = useRef<Group<Object3DEventMap>>(null);
 

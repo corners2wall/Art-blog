@@ -10,7 +10,7 @@ export default function useScrollAnimation<T extends Element>(
   const targetRef = useRef<T>(null);
 
   const scrollAnimation = useMemo(
-    () => new ScrollAnimation(intersectionOption, animationOption, callback),
+    () => new ScrollAnimation(intersectionOption, animationOption, callback as any),
     []
   );
 

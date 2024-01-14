@@ -33,9 +33,10 @@ export default function useRequestAnimationFrame(
   useEffect(() => {
     const changeAnimationStatusEvent = `change-animation-status-${animation.getId()}`;
     // ToDo make it event with uniq animation id
-    window.addEventListener(changeAnimationStatusEvent, changeAnimationStatus);
+    window.addEventListener(changeAnimationStatusEvent, changeAnimationStatus as any);
 
-    return () => window.removeEventListener(changeAnimationStatusEvent, changeAnimationStatus);
+    return () =>
+      window.removeEventListener(changeAnimationStatusEvent, changeAnimationStatus as any);
   }, []);
 
   useEffect(() => {
