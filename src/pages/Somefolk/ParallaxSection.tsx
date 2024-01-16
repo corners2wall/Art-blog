@@ -16,7 +16,7 @@ export default function ParallaxSection() {
       </div>
       <div className='h-[1px] mt-52 mb-60 w-11/12 bg-slate-900' />
       <div className='flex w-10/12 justify-between mb-80'>
-        <motion.div className='flex flex-col'>
+        <motion.div className='flex flex-col relative'>
           <motion.img
             src='svg/SCoin.svg'
             custom={1}
@@ -27,6 +27,7 @@ export default function ParallaxSection() {
           <motion.img
             src='svg/FCoin.svg'
             custom={0}
+            className='absolute'
             variants={tailsVariant}
             initial='initial'
             animate='animate'
@@ -97,12 +98,12 @@ const headsVariant: Variants = {
     opacity: 1,
   },
   animate: {
-    rotateY: [90, 360, 360, 450, 450, 450],
-    opacity: [1, 1, 1, 1, 0.9, 0.9],
+    rotateY: [90, 90, 360, 360, 450, 450, 450],
+    opacity: [0, 1, 1, 1, 1, 0.9, 0.9],
     transition: {
       duration: 5.5,
       repeat: Infinity,
-      times: [0, 0.1, 0.5, 0.55, 0.65, 1],
+      times: [0, 0.05, 0.1, 0.5, 0.55, 0.65, 1],
     },
   },
 };
@@ -110,16 +111,16 @@ const headsVariant: Variants = {
 const tailsVariant: Variants = {
   initial: {
     rotateY: 90,
-    opacity: 1,
+    opacity: 0,
   },
   animate: {
-    rotateY: [90, 360, 360, 450, 450, 450],
-    opacity: [1, 1, 1, 1, 0.9, 0.9],
+    rotateY: [0, 90, 360, 360, 450, 450, 450],
+    opacity: [0, 1, 1, 1, 1, 0.9, 0.9],
     transition: {
-      delay: 3,
+      delay: 2.75,
       duration: 5.5,
       repeat: Infinity,
-      times: [0, 0.1, 0.5, 0.55, 0.65, 1],
+      times: [0, 0.05, 0.1, 0.5, 0.55, 0.65, 1],
     },
   },
 };
