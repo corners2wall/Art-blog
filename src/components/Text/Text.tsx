@@ -17,6 +17,12 @@ interface TextProps extends PropsWithChildren {
   className?: string;
 }
 
-export default function Text({ variant, text, children, as: Tag = 'span', className }: TextProps) {
+export default function Text({
+  variant,
+  text,
+  children,
+  as: Tag = 'span',
+  className = '',
+}: TextProps) {
   return <Tag className={`${variant} ${className}`}>{text || children}</Tag>;
 }

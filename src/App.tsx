@@ -5,7 +5,7 @@ import Lenis from '@studio-freight/lenis';
 import { useEffect, useMemo } from 'react';
 
 function useSmoothScroll() {
-  const lenis = useMemo(() => new Lenis({ wheelMultiplier: 0.75, lerp: 0.025 }), []);
+  const lenis = useMemo(() => new Lenis({ wheelMultiplier: 0.9, lerp: 0.025 }), []);
   let frameId = 0;
 
   useEffect(() => {
@@ -21,7 +21,7 @@ function useSmoothScroll() {
 }
 
 export default function Application() {
-  useSmoothScroll();
+  // useSmoothScroll();
 
   return (
     <ErrorBoundary fallbackRender={fallbackRender}>

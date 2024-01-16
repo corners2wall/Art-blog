@@ -26,11 +26,11 @@ export default function AnimatedTextRow({ children, containerClassName }: Animat
     animationOption
   );
 
-  const showChangeValue = (v: number) => {
+  const changeTargetPosition = (v: number) => {
     if (ref.current) ref.current.style.transform = `translateY(${v}px)`;
   };
 
-  useRequestAnimationFrame(showChangeValue, animation);
+  useRequestAnimationFrame(changeTargetPosition, animation);
 
   return (
     <div ref={targetRef}>
