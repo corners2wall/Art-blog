@@ -1,31 +1,8 @@
+@import url('./css/reset.css');
+@import url('./css/fonts.css');
+@import url('./css/global.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: Arges;
-    src: url('/fonts/Arges.ttf');
-}
-
-@font-face {
-    font-family: Mori;
-    src: url('/fonts/Mori.ttf');
-}
-
-@font-face {
-    font-family: Editorial;
-    src: url('/fonts/Editorial.ttf');
-}
-
-@font-face {
-    font-family: BlackStone;
-    src: url('/fonts/Blackstone.ttf');
-}
-:root::-webkit-scrollbar{
-    display: none;
-}
-  
-:root {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
