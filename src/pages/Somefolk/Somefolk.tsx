@@ -7,6 +7,10 @@ import CircleSection from './CircleSection';
 import ContactSection from './ContactSection';
 import ExampleSection from './ExampleSection';
 import IntroSection from './IntroSection.1';
+import OverlayLayer from '../../components/OverlayLayer';
+import ScreenWrapper from '../../components/ScreenWrapper';
+import Tile from '../../components/Tile';
+import VolumetricText from '../../components/VolumetricText';
 
 const tileImage = getImageUrl('background', 'jpg');
 
@@ -15,7 +19,7 @@ export default function Somefolk() {
 
   return (
     <div className='text-olive-100 bg-olive-900 font-arges'>
-      {/* <ScreenWrapper className='overflow-hidden'>
+      <ScreenWrapper className='overflow-hidden'>
         {isModelsLoaded && (
           <>
             <Tile image={tileImage} />
@@ -25,7 +29,7 @@ export default function Somefolk() {
         <ScreenWrapper position='absolute'>
           <VolumetricText setIsModelsLoaded={setIsModelsLoaded} word='SOMEFOLK' />
         </ScreenWrapper>
-      </ScreenWrapper> */}
+      </ScreenWrapper>
       <ContactSection />
       <IntroSection />
       <ExampleSection />
