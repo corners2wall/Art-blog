@@ -6,7 +6,7 @@ import ParallaxSection from './ParallaxSection';
 import CircleSection from './CircleSection';
 import ContactSection from './ContactSection';
 import ExampleSection from './ExampleSection';
-import IntroSection from './IntroSection.1';
+import IntroSection from './IntroSection';
 import OverlayLayer from '../../components/OverlayLayer';
 import ScreenWrapper from '../../components/ScreenWrapper';
 import Tile from '../../components/Tile';
@@ -30,12 +30,12 @@ export default function Somefolk() {
           <VolumetricText setIsModelsLoaded={setIsModelsLoaded} word='SOMEFOLK' />
         </ScreenWrapper>
       </ScreenWrapper>
-      <ContactSection />
       <IntroSection />
       <ExampleSection />
       <WalkingSection />
       <ParallaxSection />
       <CircleSection />
+      <ContactSection />
       <Footer />
     </div>
   );

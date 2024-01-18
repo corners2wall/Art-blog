@@ -1,4 +1,7 @@
+import Lenis from '@studio-freight/lenis';
 import Text from '../../components/Text';
+import useScroll from '../../hooks/useScroll';
+import { useRef } from 'react';
 
 const circleParts = [
   'svg/wheel1.svg',
@@ -10,6 +13,15 @@ const circleParts = [
 ];
 
 export default function CircleSection() {
+  const circleRef = useRef<HTMLDivElement>(null);
+  const rotateCircle = (lenis: Lenis) => {
+    if (circleRef.current) {
+      console.log(lenis);
+    }
+  };
+
+  useScroll(rotateCircle);
+
   return (
     <section className='mt-[2vh] mx-[2vw] flex flex-col items-center text-center'>
       <Text variant='medium-title' className='mb-4'>
@@ -22,7 +34,7 @@ export default function CircleSection() {
       <Text variant='small' className='mb-60'>
         COVENT GARDEN | LONDON | ENGLAND
       </Text>
-      <Circle parts={circleParts} />
+      <Circle parts={circleParts} ref={circleRef} />
       <div className='flex h-[500vh] w-full'>
         <div className='w-2/3'></div>
         <div className='text-left flex flex-col w-[26vw] mb-28 mt-[200vh]'>

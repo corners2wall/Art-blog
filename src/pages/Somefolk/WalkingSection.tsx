@@ -56,8 +56,8 @@ export default function WalkingSection() {
               <img src='world.svg' className='w-full h-full' />
             </div>
             <div className='relative -rotate-[16deg] rounded-md overflow-hidden pt-[125%]'>
-              <div className='absolute h-full top-0 left-0'>
-                <img src='1.jpg' className='w-full h-full object-cover' />
+              <div className='absolute h-full w-full top-0 left-0'>
+                <img src='images/leo.jpg' className='w-full h-full object-cover grayscale-[50%]' />
               </div>
             </div>
           </div>
@@ -67,8 +67,11 @@ export default function WalkingSection() {
             <img src='address.svg' className='w-full h-full' />
           </div>
           <div className='relative rounded-md overflow-hidden pt-[125%]'>
-            <div className='absolute top-0 left-0 h-full'>
-              <img src='1.jpg' className='w-full h-full object-cover' />
+            <div className='absolute top-0 left-0 h-full w-full'>
+              <img
+                src='images/forest.avif'
+                className='w-full h-full object-cover grayscale-[50%]'
+              />
             </div>
           </div>
         </div>
@@ -78,8 +81,8 @@ export default function WalkingSection() {
               <img src='founded.svg' className='w-full h-full' />
             </div>
             <div className='relative rotate-[24deg] rounded-md overflow-hidden pt-[125%]'>
-              <div className='absolute top-0 left-0 h-full'>
-                <img src='1.jpg' className='w-full h-full object-cover' />
+              <div className='absolute top-0 left-0 h-full w-full grayscale-[50%]'>
+                <img src='images/monkey.jpg' className='w-full h-full object-cover' />
               </div>
             </div>
           </div>
