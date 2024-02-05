@@ -4,6 +4,7 @@ import useScroll from '../../hooks/useScroll';
 import useNodeInitialPosition from '../../hooks/useNodeInitialPosition';
 import useWindowSize from '../../hooks/useWindowSize';
 import { clamp, mapRange } from '../../utils/math';
+import { useRef } from 'react';
 
 const circleParts = [
   { path: 'svg/wheel1.svg', spin: -0.45 },
@@ -11,7 +12,7 @@ const circleParts = [
   { path: 'svg/wheel3.svg', spin: -0.5 },
   { path: 'svg/wheel4.svg', spin: 1 },
   { path: 'svg/wheel5.svg', spin: 0.25 },
-  { path: 'svg/wheel6.svg', spin: -0.51 }, // root
+  { path: 'svg/wheel6.svg', spin: -0.51 },
 ];
 
 export default function CircleSection() {
@@ -120,8 +121,9 @@ function Circle({ parts }: CircleProps) {
   const { windowHeight } = useWindowSize();
   const offsetCSS = '--circleXOffset';
   const spinCSS = '--spin';
+  const ref = useRef<HTMLDivElement>(null);
 
-  const stopScroll = ({ scroll }: Lenis) => {
+  const onScroll = ({ scroll }: Lenis) => {
     if (!initPositionRef.current) return;
 
     const start = initPositionRef.current.top + windowHeight * 1.25;
@@ -131,16 +133,17 @@ function Circle({ parts }: CircleProps) {
     const offset = clamp(14, mapRange(start, offsetEnd, scroll + windowHeight, 31, 14), 31);
     const spin = clamp(0, mapRange(start, spinEnd, scroll + windowHeight, 0, 100), 100);
 
-    document.documentElement.style.setProperty(offsetCSS, `${offset}vw`);
-    document.documentElement.style.setProperty(spinCSS, `${spin}deg`);
+    ref.current!.style.setProperty(offsetCSS, `${offset}vw`);
+    ref.current!.style.setProperty(spinCSS, `${spin}deg`);
   };
 
-  useScroll(stopScroll, [stopScroll]);
+  useScroll(onScroll, [onScroll]);
 
   return (
     <div className='w-full h-screen flex items-center sticky top-0' ref={setNodeRef}>
       <div
-        className='w-[38vw] h-[38vw] relative'
+        className='w-[38vw] h-[38vw] relative will-change-transform'
+        ref={ref}
         style={{ transform: `translateX(var(${offsetCSS}))` }}
       >
         {parts.map(({ path, spin }, index) => (
@@ -150,7 +153,7 @@ function Circle({ parts }: CircleProps) {
               backgroundImage: `url(${path})`,
               transform: `rotate(calc(var(${spinCSS}) * ${spin}))`,
             }}
-            className='w-full h-full bg-no-repeat bg-contain absolute'
+            className='w-full h-full bg-no-repeat bg-contain absolute will-change-transform'
           />
         ))}
       </div>

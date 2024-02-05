@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import Animation, { AnimationOptions } from '../../utils/Animation';
+import { AnimationOptions } from '../../utils/Animation';
 import ScrollAnimation, { IntersectionOptions } from '../../utils/ScrollAnimation';
 
 export default function useScrollAnimation<T extends Element>(

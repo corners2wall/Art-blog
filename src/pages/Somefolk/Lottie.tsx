@@ -1,13 +1,15 @@
-import LottieWeb, { AnimationConfig, AnimationConfigWithPath, AnimationItem } from 'lottie-web';
-import { useEffect, useRef, useState } from 'react';
+import LottieWeb, { AnimationConfig, AnimationItem } from 'lottie-web';
+import { ForwardedRef, forwardRef, useEffect, useRef, useState } from 'react';
+import { Nullable } from '../../types/utils';
 
 interface LottieProps extends Omit<AnimationConfig, 'container'> {
   path: string;
   className?: string;
+  forwardRef: ForwardedRef<HTMLDivElement>;
 }
 
-export default function Lottie({ className, ...animationConfig }: LottieProps) {
-  const ref = useRef<HTMLDivElement>(null);
+function BaseLottie({ className, forwardRef, ...animationConfig }: LottieProps) {
+  const ref = useRef<Nullable<HTMLDivElement>>(null);
   const [animation, setAnimation] = useState<AnimationItem>();
   let isFirstRender = true;
 
@@ -18,6 +20,8 @@ export default function Lottie({ className, ...animationConfig }: LottieProps) {
       const lottie = LottieWeb.loadAnimation({
         container: ref.current,
         ...animationConfig,
+        loop: false,
+        autoplay: false,
       });
 
       setAnimation(lottie);
@@ -26,5 +30,19 @@ export default function Lottie({ className, ...animationConfig }: LottieProps) {
     return () => animation && animation.destroy();
   }, []);
 
-  return <div className={className} ref={ref}></div>;
+  return (
+    <div
+      className={`${className} will-change-transform`}
+      ref={(node) => {
+        ref.current = node;
+        // if (forwardRef) forwardRef.;
+      }}
+    />
+  );
 }
+
+const Lottie = forwardRef<HTMLDivElement, LottieProps>((props, ref) => (
+  <BaseLottie {...props} forwardRef={ref} />
+));
+
+export default Lottie;

@@ -1,4 +1,3 @@
-import AnimatedTextRow from '../../components/Animation/AnimatedTextRow';
 import Text from '../../components/Text';
 import Lottie from './Lottie';
 
@@ -6,24 +5,24 @@ export default function IntroSection() {
   return (
     <>
       <div className='pl-[1vw] h-auto leading-none mt-4 font-black'>
-        <AnimatedTextRow containerClassName='pb-4'>
+        <div className='flex items-center mb-[-4.5vw] tracking-[0.05vw] pb-4'>
           <Text variant='extra-large'>RUSSIA</Text>
           <div className='w-[8vw] h-[0.5vw] bg-olive-100 mx-[1vw] mb-[2.5vw]' />
           <Text variant='extra-large'>BASED</Text>
           <Text variant='extra-large' className='ml-[3.5vw]'>
             ART
           </Text>
-        </AnimatedTextRow>
-        <AnimatedTextRow containerClassName='pb-4'>
+        </div>
+        <div className='flex items-center mb-[-4.5vw] tracking-[0.05vw] pb-4'>
           <Text variant='extra-large'>DIRECTOR</Text>
           <div className='w-[0.5vw] h-[10vw] bg-olive-100 mx-[3vw] mb-[2.5vw]' />
           <Text variant='extra-large'>DESIGNER</Text>
-        </AnimatedTextRow>
-        <AnimatedTextRow containerClassName='pb-4'>
+        </div>
+        <div className='flex items-center mb-[-4.5vw] tracking-[0.05vw] pb-4'>
           <Text variant='extra-large'>CREATIVE DEVELOPER</Text>
-        </AnimatedTextRow>
+        </div>
       </div>
-      <AnimatedTextRow containerClassName='justify-center pt-3 flex-col'>
+      <div className='flex items-center mb-[-4.5vw] tracking-[0.05vw] justify-center pt-3 flex-col'>
         <h3 className='text-5xl font-black pb-4'>
           TELLING MEANINGFUL STORIES THAT NEED TO BE TOLD (BY HUMANS, NOT AI)
         </h3>
@@ -43,7 +42,7 @@ export default function IntroSection() {
           <Text variant='small'>THAT DELIVER</Text>
           <Text variant='medium-bold'>RESULTS</Text>
         </div>
-      </AnimatedTextRow>
+      </div>
       <div className='flex items-center justify-center mt-16 text-5xl font-black'>
         <div className='flex flex-col items-center'>
           <Text variant='small-bold'>MEMORABLE</Text>
