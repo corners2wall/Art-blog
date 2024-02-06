@@ -1,5 +1,4 @@
 import { Variants, motion } from 'framer-motion';
-import ScreenWrapper from '../ScreenWrapper';
 import getImageUrl from '../../utils/getImageUrl';
 import Text from '../Text';
 
@@ -44,10 +43,7 @@ const opacityAnimation: Variants = {
 
 export default function OverlayLayer() {
   return (
-    <ScreenWrapper
-      className='flex flex-col justify-between text-[#bfea88] p-4 font-arges z-10'
-      position='absolute'
-    >
+    <div className='w-screen h-screen top-0 left-0 absolute overflow-hidden flex flex-col justify-between text-[#bfea88] p-4 font-arges z-10'>
       <motion.div
         className='flex justify-between text-lg font-normal'
         variants={opacityAnimation}
@@ -133,6 +129,6 @@ export default function OverlayLayer() {
         </div>
         <div className='w-[20%]' />
       </motion.div>
-    </ScreenWrapper>
+    </div>
   );
 }

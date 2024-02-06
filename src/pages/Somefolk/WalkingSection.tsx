@@ -25,12 +25,12 @@ export default function WalkingSection() {
       <Text variant='medium-large' as='h2' className='mt-[18vh]'>
         WORKING WITH STARTUPS & SMES TO CREATE MEMORABLE BRANDS
       </Text>
-      <Lottie
+      {/* <Lottie
         className='h-1/3 w-1/2 mt-[-8vw]'
         path='/lottie/walkingMan.json'
         // forwardRef={setNodeRef}
-      />
-      <WalkingLottieAnimation />
+      /> */}
+      {/* <WalkingLottieAnimation /> */}
       <Text variant='medium-large' as='h2' className='mt-[-3.5vh]'>
         & HIGHLY BESPOKE WEBSITES
       </Text>
