@@ -1,7 +1,7 @@
 import Lenis from '@studio-freight/lenis';
 import Text from '../../components/Text';
 import useScroll from '../../hooks/useScroll';
-import useNodeInitialPosition from '../../hooks/useNodeInitialPosition';
+import useInitialPosition from '../../hooks/useInitialPosition';
 import useWindowSize from '../../hooks/useWindowSize';
 import { clamp, mapRange } from '../../utils/math';
 import { useRef } from 'react';
@@ -117,18 +117,18 @@ interface CircleProps {
 }
 
 function Circle({ parts }: CircleProps) {
-  const [initPositionRef, setNodeRef] = useNodeInitialPosition<HTMLDivElement>();
+  const [initPosition, setNodePositionRef] = useInitialPosition<HTMLDivElement>();
   const { windowHeight } = useWindowSize();
   const offsetCSS = '--circleXOffset';
   const spinCSS = '--spin';
   const ref = useRef<HTMLDivElement>(null);
 
   const onScroll = ({ scroll }: Lenis) => {
-    if (!initPositionRef.current) return;
+    if (!initPosition) return;
 
-    const start = initPositionRef.current.top + windowHeight * 1.25;
-    const offsetEnd = initPositionRef.current.bottom + windowHeight * 1.75;
-    const spinEnd = initPositionRef.current.bottom + windowHeight * 5;
+    const start = initPosition.top + windowHeight * 0.5;
+    const offsetEnd = initPosition.bottom + windowHeight;
+    const spinEnd = initPosition.bottom + windowHeight * 5;
 
     const offset = clamp(14, mapRange(start, offsetEnd, scroll + windowHeight, 31, 14), 31);
     const spin = clamp(0, mapRange(start, spinEnd, scroll + windowHeight, 0, 100), 100);
@@ -137,10 +137,10 @@ function Circle({ parts }: CircleProps) {
     ref.current!.style.setProperty(spinCSS, `${spin}deg`);
   };
 
-  useScroll(onScroll, [onScroll]);
+  useScroll(onScroll, [initPosition, windowHeight]);
 
   return (
-    <div className='w-full h-screen flex items-center sticky top-0' ref={setNodeRef}>
+    <div className='w-full h-screen flex items-center sticky top-0' ref={setNodePositionRef}>
       <div
         className='w-[38vw] h-[38vw] relative will-change-transform'
         ref={ref}

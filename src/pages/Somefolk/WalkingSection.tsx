@@ -1,10 +1,10 @@
 import Text from '../../components/Text';
-import Lottie from './Lottie';
-import useNodeInitialPosition from '../../hooks/useNodeInitialPosition';
+import useInitialPosition from '../../hooks/useInitialPosition';
 import useWindowSize from '../../hooks/useWindowSize';
 import Lenis from '@studio-freight/lenis';
 import useScroll from '../../hooks/useScroll';
 import { clamp, mapRange } from '../../utils/math';
+import ScrollableLottie from '../../components/Lottie/ScrollableLottie';
 
 export default function WalkingSection() {
   return (
@@ -111,7 +111,7 @@ function WalkingLottieAnimation() {
   // useScroll(animateLottie, [animateLottie]);
 
   return (
-    <Lottie
+    <ScrollableLottie
       className='h-1/3 w-1/2 mt-[-8vw]'
       path='/lottie/walkingMan.json'
       // forwardRef={setNodeRef}

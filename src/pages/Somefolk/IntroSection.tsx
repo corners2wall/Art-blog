@@ -1,26 +1,34 @@
+import Lottie from '../../components/Lottie/Lottie';
+import ScrollableLottie from '../../components/Lottie/ScrollableLottie';
+import Scrollable from '../../components/Scrollable';
 import Text from '../../components/Text';
-import Lottie from './Lottie';
 
 export default function IntroSection() {
   return (
     <>
       <div className='pl-[1vw] h-auto leading-none mt-4 font-black'>
-        <div className='flex items-center mb-[-4.5vw] tracking-[0.05vw] pb-4'>
-          <Text variant='extra-large'>RUSSIA</Text>
-          <div className='w-[8vw] h-[0.5vw] bg-olive-100 mx-[1vw] mb-[2.5vw]' />
-          <Text variant='extra-large'>BASED</Text>
-          <Text variant='extra-large' className='ml-[3.5vw]'>
-            ART
-          </Text>
-        </div>
-        <div className='flex items-center mb-[-4.5vw] tracking-[0.05vw] pb-4'>
-          <Text variant='extra-large'>DIRECTOR</Text>
-          <div className='w-[0.5vw] h-[10vw] bg-olive-100 mx-[3vw] mb-[2.5vw]' />
-          <Text variant='extra-large'>DESIGNER</Text>
-        </div>
-        <div className='flex items-center mb-[-4.5vw] tracking-[0.05vw] pb-4'>
-          <Text variant='extra-large'>CREATIVE DEVELOPER</Text>
-        </div>
+        <Scrollable>
+          <div className='flex items-center mb-[-4.5vw] tracking-[0.05vw] pb-4'>
+            <Text variant='extra-large'>RUSSIA</Text>
+            <div className='w-[8vw] h-[0.5vw] bg-olive-100 mx-[1vw] mb-[2.5vw]' />
+            <Text variant='extra-large'>BASED</Text>
+            <Text variant='extra-large' className='ml-[3.5vw]'>
+              ART
+            </Text>
+          </div>
+        </Scrollable>
+        <Scrollable>
+          <div className='flex items-center mb-[-4.5vw] tracking-[0.05vw] pb-4'>
+            <Text variant='extra-large'>DIRECTOR</Text>
+            <div className='w-[0.5vw] h-[10vw] bg-olive-100 mx-[3vw] mb-[2.5vw]' />
+            <Text variant='extra-large'>DESIGNER</Text>
+          </div>
+        </Scrollable>
+        <Scrollable>
+          <div className='flex items-center mb-[-4.5vw] tracking-[0.05vw] pb-4'>
+            <Text variant='extra-large'>CREATIVE DEVELOPER</Text>
+          </div>
+        </Scrollable>
       </div>
       <div className='flex items-center mb-[-4.5vw] tracking-[0.05vw] justify-center pt-3 flex-col'>
         <h3 className='text-5xl font-black pb-4'>
