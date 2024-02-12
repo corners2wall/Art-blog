@@ -10,7 +10,7 @@ import PreviewSection from './PreviewSection';
 export default function Somefolk() {
   return (
     <div className='text-olive-100 bg-olive-900 font-arges'>
-      {/* <PreviewSection /> */}
+      <PreviewSection />
       <IntroSection />
       <ExampleSection />
       <WalkingSection />
