@@ -1,0 +1,1 @@
+- [ ] Remove @studio-freight/hamo

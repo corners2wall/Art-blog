@@ -1,10 +1,10 @@
 import Lenis from '@studio-freight/lenis';
 import Text from '../../components/Text';
 import useScroll from '../../hooks/useScroll';
-import useInitialPosition from '../../hooks/useInitialPosition';
 import useWindowSize from '../../hooks/useWindowSize';
 import { clamp, mapRange } from '../../utils/math';
 import { useRef } from 'react';
+import { useRect } from '@studio-freight/hamo';
 
 const circleParts = [
   { path: 'svg/wheel1.svg', spin: -0.45 },
@@ -117,30 +117,39 @@ interface CircleProps {
 }
 
 function Circle({ parts }: CircleProps) {
-  const [initPosition, setNodePositionRef] = useInitialPosition<HTMLDivElement>();
+  const [wrapperRef, position] = useRect();
+
   const { windowHeight } = useWindowSize();
   const offsetCSS = '--circleXOffset';
   const spinCSS = '--spin';
   const ref = useRef<HTMLDivElement>(null);
 
-  const onScroll = ({ scroll }: Lenis) => {
-    if (!initPosition) return;
+  const spinOnScroll = ({ scroll }: Lenis) => {
+    if (!position) return;
 
-    const start = initPosition.top + windowHeight * 0.5;
-    const offsetEnd = initPosition.bottom + windowHeight;
-    const spinEnd = initPosition.bottom + windowHeight * 5;
+    const start = position.top + windowHeight * 1.5;
+    const end = position.top + position.height + windowHeight * 5;
 
-    const offset = clamp(14, mapRange(start, offsetEnd, scroll + windowHeight, 31, 14), 31);
-    const spin = clamp(0, mapRange(start, spinEnd, scroll + windowHeight, 0, 100), 100);
+    const value = clamp(0, mapRange(start, end, scroll + windowHeight, 0, 100), 100);
 
-    ref.current!.style.setProperty(offsetCSS, `${offset}vw`);
-    ref.current!.style.setProperty(spinCSS, `${spin}deg`);
+    ref.current!.style.setProperty(spinCSS, `${value}deg`);
   };
 
-  useScroll(onScroll, [initPosition, windowHeight]);
+  const moveOnScroll = ({ scroll }: Lenis) => {
+    if (!position) return;
+
+    const start = position.top + windowHeight * 1.5;
+    const end = position.top + position.height + windowHeight * 2;
+
+    const value = clamp(14, mapRange(start, end, scroll + windowHeight, 31, 14), 31);
+
+    ref.current!.style.setProperty(offsetCSS, `${value}vw`);
+  };
+
+  useScroll([moveOnScroll, spinOnScroll], [position, windowHeight]);
 
   return (
-    <div className='w-full h-screen flex items-center sticky top-0' ref={setNodePositionRef}>
+    <div className='w-full h-screen flex items-center sticky top-0' ref={wrapperRef} id='qwe'>
       <div
         className='w-[38vw] h-[38vw] relative will-change-transform'
         ref={ref}

@@ -1,16 +1,24 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Nullable } from '../types/utils';
 
-type CustomDomRect = Nullable<Omit<DOMRectReadOnly, 'toJSON'>>;
+export type CustomDomRect = Omit<DOMRectReadOnly, 'toJSON'>;
 
 export default function useInitialPosition<T extends HTMLElement>(): [
-  CustomDomRect,
+  Nullable<CustomDomRect>,
   (node: Nullable<T>) => void
 ] {
-  const [initialPosition, setInitialPosition] = useState<CustomDomRect>(null);
+  const [initialPosition, setInitialPosition] = useState<Nullable<CustomDomRect>>(null);
+  const ref = useRef<T | null>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      setInitialPosition(ref.current.getBoundingClientRect());
+    }
+  }, []);
 
   const setPosition = useCallback((node: Nullable<T>) => {
-    setInitialPosition(() => node?.getBoundingClientRect() || null);
+    ref.current = node;
+    // setInitialPosition(() => node?.getBoundingClientRect() || null);
   }, []);
 
   return [initialPosition, setPosition];

@@ -1,4 +1,3 @@
-import Lottie from '../../components/Lottie/Lottie';
 import ScrollableLottie from '../../components/Lottie/ScrollableLottie';
 import Scrollable from '../../components/Scrollable';
 import Text from '../../components/Text';
@@ -58,7 +57,7 @@ export default function IntroSection() {
           <Text variant='medium'>BRAND STRATEGY</Text>
           <Text variant='medium'>TYPOGRAPHY</Text>
         </div>
-        <Lottie className='h-1/2 w-1/2' path='/lottie/fallingMan.json' />
+        <ScrollableLottie className='h-1/2 w-1/2' path='/lottie/fallingMan.json' />
         <div className='flex flex-col items-center'>
           <Text variant='small-bold'>DEVELOPING DIGITAL PRODUCTS</Text>
           <Text variant='medium'>ART DIRECTION</Text>

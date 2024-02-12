@@ -1,9 +1,4 @@
 import Text from '../../components/Text';
-import useInitialPosition from '../../hooks/useInitialPosition';
-import useWindowSize from '../../hooks/useWindowSize';
-import Lenis from '@studio-freight/lenis';
-import useScroll from '../../hooks/useScroll';
-import { clamp, mapRange } from '../../utils/math';
 import ScrollableLottie from '../../components/Lottie/ScrollableLottie';
 
 export default function WalkingSection() {

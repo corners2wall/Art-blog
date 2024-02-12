@@ -2,13 +2,21 @@ import { useEffect } from 'react';
 import { useApplicationContext } from '../container/ApplicationContext';
 import Lenis from '@studio-freight/lenis';
 
-export default function useScroll(callback: (lenis: Lenis) => void, deps: any[] = []) {
+type scrollCallback = (lenis: Lenis) => void;
+
+function useScroll(callback: scrollCallback, deps: any[]): void;
+function useScroll(callback: scrollCallback[], deps: any[]): void;
+function useScroll(callback: scrollCallback | scrollCallback[], deps: any[] = []): void {
   const { lenis } = useApplicationContext();
+  const callbacks = Array.isArray(callback) ? callback : [callback];
 
   useEffect(() => {
-    lenis.on('scroll', callback);
+    callbacks.forEach((cb) => lenis.on('scroll', cb));
+
     lenis.emit();
 
-    return () => lenis.off('scroll', callback);
-  }, [lenis, callback, ...deps]);
+    return () => callbacks.forEach((cb) => lenis.off('scroll', cb));
+  }, [lenis, callback, ...callbacks, ...deps]);
 }
+
+export default useScroll;

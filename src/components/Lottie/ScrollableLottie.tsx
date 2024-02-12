@@ -1,45 +1,42 @@
 import Lenis from '@studio-freight/lenis';
 import { clamp } from 'framer-motion';
-import { useRef, useEffect, useLayoutEffect } from 'react';
-import useInitialPosition from '../../hooks/useInitialPosition';
+import { useRef, useEffect } from 'react';
 import useWindowSize from '../../hooks/useWindowSize';
 import { mapRange } from '../../utils/math';
 import Lottie, { LottieControl, LottieProps } from './Lottie';
 import useScroll from '../../hooks/useScroll';
+import { useRect } from '@studio-freight/hamo';
 
 interface ScrollableLottieProps extends LottieProps {}
 
 export default function ScrollableLottie(props: ScrollableLottieProps) {
-  const [position, setPosition] = useInitialPosition();
+  const [setPosition, position] = useRect();
   const lottieControlRef = useRef({} as LottieControl);
   const { windowHeight } = useWindowSize();
-  // console.log(position?.top, position?.bottom);
-  // ToDo: make universal
+
   const animateLottieOnScroll = ({ scroll }: Lenis) => {
     const { animation } = lottieControlRef.current;
 
     if (!position || !animation) return;
-    // console.log(position?.top, position?.bottom);
 
     const totalFrames = animation.totalFrames;
 
     const start = position.top;
-    const end = position.bottom + windowHeight;
-    // console.log(start, end, position);
+    const end = position.top + position.height + windowHeight;
 
-    // ToDo: add function for handle output value;
     const progress = clamp(
       1,
       mapRange(start, end, scroll + windowHeight, 1, totalFrames),
       totalFrames
     );
 
+    animation.setSpeed(10);
     animation.goToAndStop(progress);
   };
 
-  useScroll(animateLottieOnScroll, [position]);
+  useScroll(animateLottieOnScroll, [animateLottieOnScroll]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setPosition(lottieControlRef.current.container);
 
     return () => setPosition(null);
