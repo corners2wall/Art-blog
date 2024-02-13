@@ -5,6 +5,7 @@ import useWindowSize from '../../hooks/useWindowSize';
 import { clamp, mapRange } from '../../utils/math';
 import { useRef } from 'react';
 import { useRect } from '@studio-freight/hamo';
+import Scrollable, { ScrollConfiguration } from '../../components/Scrollable/Scrollable';
 
 const circleParts = [
   { path: 'svg/wheel1.svg', spin: -0.45 },
@@ -14,6 +15,9 @@ const circleParts = [
   { path: 'svg/wheel5.svg', spin: 0.25 },
   { path: 'svg/wheel6.svg', spin: -0.51 },
 ];
+
+const offsetCSS = '--circleXOffset';
+const spinCSS = '--spin';
 
 export default function CircleSection() {
   return (
@@ -117,42 +121,28 @@ interface CircleProps {
 }
 
 function Circle({ parts }: CircleProps) {
-  const [wrapperRef, position] = useRect();
-
-  const { windowHeight } = useWindowSize();
-  const offsetCSS = '--circleXOffset';
-  const spinCSS = '--spin';
-  const ref = useRef<HTMLDivElement>(null);
-
-  const spinOnScroll = ({ scroll }: Lenis) => {
-    if (!position) return;
-
-    const start = position.top + windowHeight * 1.5;
-    const end = position.top + position.height + windowHeight * 5;
-
-    const value = clamp(0, mapRange(start, end, scroll + windowHeight, 0, 100), 100);
-
-    ref.current!.style.setProperty(spinCSS, `${value}deg`);
-  };
-
-  const moveOnScroll = ({ scroll }: Lenis) => {
-    if (!position) return;
-
-    const start = position.top + windowHeight * 1.5;
-    const end = position.top + position.height + windowHeight * 2;
-
-    const value = clamp(14, mapRange(start, end, scroll + windowHeight, 31, 14), 31);
-
-    ref.current!.style.setProperty(offsetCSS, `${value}vw`);
-  };
-
-  useScroll([moveOnScroll, spinOnScroll], [position, windowHeight]);
+  const circleScrollConfiguration: ScrollConfiguration<HTMLDivElement>[] = [
+    {
+      getStart: (node, position, meta) => position.top + meta.windowHeight * 0.5,
+      getEnd: (node, position, meta) => position.top + position.height + meta.windowHeight * 5,
+      mapTo: [0, 100],
+      mutate: (node, value) => node.style.setProperty(spinCSS, `${value}deg`),
+    },
+    {
+      getStart: (node, position, meta) => position.top + meta.windowHeight * 0.5,
+      getEnd: (node, position, meta) => position.top + position.height + meta.windowHeight * 1.5,
+      mapTo: [14, 31, 31, 14],
+      mutate: (node, value) => node.style.setProperty(offsetCSS, `${value}vw`),
+    },
+  ];
 
   return (
-    <div className='w-full h-screen flex items-center sticky top-0' ref={wrapperRef} id='qwe'>
+    <Scrollable
+      className='w-full h-screen flex items-center sticky top-0'
+      configuration={circleScrollConfiguration}
+    >
       <div
         className='w-[38vw] h-[38vw] relative will-change-transform'
-        ref={ref}
         style={{ transform: `translateX(var(${offsetCSS}))` }}
       >
         {parts.map(({ path, spin }, index) => (
@@ -166,6 +156,6 @@ function Circle({ parts }: CircleProps) {
           />
         ))}
       </div>
-    </div>
+    </Scrollable>
   );
 }

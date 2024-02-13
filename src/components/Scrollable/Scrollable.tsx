@@ -1,15 +1,31 @@
-import { CSSProperties, ElementType, PropsWithChildren, useCallback, useRef } from 'react';
+import { CSSProperties, ElementType, PropsWithChildren, useCallback, useMemo, useRef } from 'react';
 import useScroll from '../../hooks/useScroll';
 import useWindowSize from '../../hooks/useWindowSize';
 import Lenis from '@studio-freight/lenis';
 import { Nullable } from '../../types/utils';
+import { useRect } from '@studio-freight/hamo';
+import { clamp, mapRange } from '../../utils/math';
 
-type CalcValue<T> = (node: T, position: any) => number;
+interface Position {
+  with: number;
+  height: number;
+  top: number;
+  left: number;
+}
 
-interface ScrollConfiguration<T> {
-  start: number | CalcValue<T>;
-  end: number | CalcValue<T>;
-  mapTo: [start: number, end: number];
+type CalcValue<T> = (node: T, position: Position, meta: MetaInformation) => number;
+
+interface MetaInformation {
+  windowHeight: number;
+  windowWidth: number;
+}
+
+export interface ScrollConfiguration<T> {
+  getStart: CalcValue<T>;
+  getEnd: CalcValue<T>;
+  mapTo:
+    | [start: number, end: number]
+    | [start: number, end: number, reverseStart: number, reverseEnd: number];
   mutate: (node: T, value: number) => void;
   // ToDo: Add easing function
 }
@@ -18,36 +34,67 @@ interface ScrollableProps<T> extends PropsWithChildren {
   wrapper?: ElementType;
   className?: string;
   style?: CSSProperties;
-  configuration?: ScrollConfiguration<T>[];
+  configuration: ScrollConfiguration<T>[];
+}
+
+function createUserScroll<T extends HTMLElement>(
+  configurations: ScrollConfiguration<T>[],
+  ref: React.MutableRefObject<T | null>,
+  position: Position,
+  meta: MetaInformation
+) {
+  return configurations.map((configuration) => (lenis: Lenis) => {
+    const node = ref.current;
+
+    if (!position.top || !node) return;
+
+    const start = configuration.getStart(node, position, meta);
+    const end = configuration.getEnd(node, position, meta);
+
+    const [mapToStart, mapToEnd, reverseStart = mapToStart, reverseEnd = mapToEnd] =
+      configuration.mapTo;
+
+    const fraction = mapRange(start, end, lenis.scroll, 0, 1);
+    // console.log(fraction);
+
+    // ToDo: time function
+    const value = clamp(
+      mapToStart,
+      mapRange(start, end, lenis.scroll, reverseStart, reverseEnd),
+      mapToEnd
+    );
+
+    configuration.mutate(node, value);
+  });
 }
 
 export default function Scrollable<T extends HTMLElement>({
   children,
   style,
   className,
-  configuration,
+  configuration = [],
   wrapper: Wrapper = 'div',
 }: ScrollableProps<T>) {
+  const [wrapperRef, position] = useRect();
   const ref = useRef<T | null>(null);
   const { windowHeight, windowWidth } = useWindowSize();
-  // const [initialPosition, setInitialPosition] = useInitialPosition<T>();
 
-  const setRef = useCallback((node: Nullable<T>) => {
-    // setInitialPosition(node);
+  const setRef = (node: T | null) => {
+    wrapperRef(node);
     ref.current = node;
-  }, []);
-
-  function createUserScroll(configurations: ScrollConfiguration<T>[]) {
-    configurations.map((conf) => (lenis: Lenis) => {});
-  }
-
-  const onScroll = ({ scroll }: Lenis) => {
-    // if (!initialPosition || !ref.current) return;
-    // const start = configuration.start;
-    // const start = typeof configuration.start === 'function' ?
   };
 
-  useScroll(onScroll, [onScroll]);
+  const meta: MetaInformation = {
+    windowHeight,
+    windowWidth,
+  };
+
+  const scrollCallbacks = useMemo(
+    () => createUserScroll(configuration, ref, position, meta),
+    [configuration, ref, position, meta]
+  );
+
+  useScroll(scrollCallbacks, scrollCallbacks);
 
   return (
     <Wrapper style={style} className={className} ref={setRef}>
@@ -55,10 +102,3 @@ export default function Scrollable<T extends HTMLElement>({
     </Wrapper>
   );
 }
-
-const example: ScrollConfiguration<HTMLDivElement> = {
-  start: (node, position) => position.top,
-  end: (node, position) => position.bottom,
-  mapTo: [31, 14],
-  mutate: (node, value) => node.style.setProperty('--circleXOffset', `${value}vw`),
-};
