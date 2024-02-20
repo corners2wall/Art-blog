@@ -11,6 +11,8 @@ export default function Somefolk() {
   return (
     <div className='text-olive-100 bg-olive-900 font-arges'>
       <PreviewSection />
+      {/* <ExampleSection />
+      <ExampleSection /> */}
       <IntroSection />
       <ExampleSection />
       <WalkingSection />

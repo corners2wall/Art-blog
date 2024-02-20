@@ -5,7 +5,10 @@ import useWindowSize from '../../hooks/useWindowSize';
 import { clamp, mapRange } from '../../utils/math';
 import { useRef } from 'react';
 import { useRect } from '@studio-freight/hamo';
-import Scrollable, { ScrollConfiguration } from '../../components/Scrollable/Scrollable';
+import {
+  BaseScrollable as Scrollable,
+  ScrollConfiguration,
+} from '../../components/Scrollable/Scrollable';
 
 const circleParts = [
   { path: 'svg/wheel1.svg', spin: -0.45 },
@@ -116,26 +119,26 @@ export default function CircleSection() {
   );
 }
 
+const circleScrollConfiguration: ScrollConfiguration<HTMLDivElement>[] = [
+  {
+    getStart: (node, position, meta) => position.top + meta.windowHeight * 0.5,
+    getEnd: (node, position, meta) => position.top + position.height + meta.windowHeight * 5,
+    mapTo: [0, 100],
+    mutate: (node, value) => node.style.setProperty(spinCSS, `${value}deg`),
+  },
+  {
+    getStart: (node, position, meta) => position.top + meta.windowHeight * 0.5,
+    getEnd: (node, position, meta) => position.top + position.height + meta.windowHeight * 1.5,
+    mapTo: [14, 31, 31, 14],
+    mutate: (node, value) => node.style.setProperty(offsetCSS, `${value}vw`),
+  },
+];
+
 interface CircleProps {
   parts: { path: string; spin: number }[];
 }
 
 function Circle({ parts }: CircleProps) {
-  const circleScrollConfiguration: ScrollConfiguration<HTMLDivElement>[] = [
-    {
-      getStart: (node, position, meta) => position.top + meta.windowHeight * 0.5,
-      getEnd: (node, position, meta) => position.top + position.height + meta.windowHeight * 5,
-      mapTo: [0, 100],
-      mutate: (node, value) => node.style.setProperty(spinCSS, `${value}deg`),
-    },
-    {
-      getStart: (node, position, meta) => position.top + meta.windowHeight * 0.5,
-      getEnd: (node, position, meta) => position.top + position.height + meta.windowHeight * 1.5,
-      mapTo: [14, 31, 31, 14],
-      mutate: (node, value) => node.style.setProperty(offsetCSS, `${value}vw`),
-    },
-  ];
-
   return (
     <Scrollable
       className='w-full h-screen flex items-center sticky top-0'

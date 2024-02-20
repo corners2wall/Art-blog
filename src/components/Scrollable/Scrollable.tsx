@@ -1,4 +1,14 @@
-import { CSSProperties, ElementType, PropsWithChildren, useCallback, useMemo, useRef } from 'react';
+import {
+  CSSProperties,
+  ElementType,
+  ForwardedRef,
+  PropsWithChildren,
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from 'react';
 import useScroll from '../../hooks/useScroll';
 import useWindowSize from '../../hooks/useWindowSize';
 import Lenis from '@studio-freight/lenis';
@@ -30,11 +40,12 @@ export interface ScrollConfiguration<T> {
   // ToDo: Add easing function
 }
 
-interface ScrollableProps<T> extends PropsWithChildren {
+interface BaseScrollableProps<T> extends PropsWithChildren {
   wrapper?: ElementType;
   className?: string;
   style?: CSSProperties;
   configuration: ScrollConfiguration<T>[];
+  forwardRef?: ForwardedRef<T | null>;
 }
 
 function createUserScroll<T extends HTMLElement>(
@@ -46,7 +57,7 @@ function createUserScroll<T extends HTMLElement>(
   return configurations.map((configuration) => (lenis: Lenis) => {
     const node = ref.current;
 
-    if (!position.top || !node) return;
+    if (!node) return;
 
     const start = configuration.getStart(node, position, meta);
     const end = configuration.getEnd(node, position, meta);
@@ -68,13 +79,14 @@ function createUserScroll<T extends HTMLElement>(
   });
 }
 
-export default function Scrollable<T extends HTMLElement>({
+export function BaseScrollable<T extends HTMLElement>({
   children,
   style,
   className,
+  forwardRef,
   configuration = [],
   wrapper: Wrapper = 'div',
-}: ScrollableProps<T>) {
+}: BaseScrollableProps<T>) {
   const [wrapperRef, position] = useRect();
   const ref = useRef<T | null>(null);
   const { windowHeight, windowWidth } = useWindowSize();
@@ -83,6 +95,8 @@ export default function Scrollable<T extends HTMLElement>({
     wrapperRef(node);
     ref.current = node;
   };
+
+  useImperativeHandle(forwardRef, () => ref.current!, [ref.current]);
 
   const meta: MetaInformation = {
     windowHeight,
@@ -97,8 +111,16 @@ export default function Scrollable<T extends HTMLElement>({
   useScroll(scrollCallbacks, scrollCallbacks);
 
   return (
-    <Wrapper style={style} className={className} ref={setRef}>
+    <Wrapper style={style} className={`will-change-transform ${className}`} ref={setRef}>
       {children}
     </Wrapper>
   );
 }
+
+interface ScrollableProps<T> extends Omit<BaseScrollableProps<T>, 'forwardRef'> {}
+
+const Scrollable = forwardRef<HTMLElement, ScrollableProps<HTMLElement>>((props, ref) => (
+  <BaseScrollable {...props} forwardRef={ref} />
+));
+
+export default Scrollable;
