@@ -14,23 +14,29 @@ export default function ScrollableLottie(props: ScrollableLottieProps) {
   const lottieControlRef = useRef({} as LottieControl);
   const { windowHeight } = useWindowSize();
 
-  const animateLottieOnScroll = ({ scroll }: Lenis) => {
+  const animateLottieOnScroll = (lenis: Lenis) => {
     const { animation } = lottieControlRef.current;
+    const scroll = lenis.scroll + windowHeight;
 
     if (!position || !animation) return;
 
     const totalFrames = animation.totalFrames;
-
-    const start = position.top;
+    const start = position.top * 1.1;
     const end = position.top + position.height + windowHeight;
 
-    const progress = clamp(
-      1,
-      mapRange(start, end, scroll + windowHeight, 1, totalFrames),
-      totalFrames
-    );
+    if (scroll < start) {
+      animation.goToAndStop(0);
+      return;
+    }
 
-    animation.setSpeed(10);
+    if (scroll > end) {
+      animation.goToAndStop(totalFrames);
+      return;
+    }
+
+    const progress = clamp(1, mapRange(start, end, scroll, 1, totalFrames), totalFrames);
+
+    animation.frameModifier = 1;
     animation.goToAndStop(progress);
   };
 

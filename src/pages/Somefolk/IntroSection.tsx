@@ -1,3 +1,4 @@
+import AnimateButton from '../../components/AnimateButton';
 import ScrollableLottie from '../../components/Lottie/ScrollableLottie';
 import { BaseScrollable as Scrollable } from '../../components/Scrollable/Scrollable';
 import { ScrollConfiguration } from '../../components/Scrollable/Scrollable';
@@ -94,7 +95,7 @@ export default function IntroSection() {
           <Text variant='medium'>DEVELOPMENT</Text>
         </div>
       </div>
-      <div className='flex flex-col items-center'>
+      <div className='relative flex flex-col items-center -mt-20 z-10 pb-36'>
         <Text variant='medium-large' as='h2'>
           V2.0 (2K23)
         </Text>
@@ -113,7 +114,8 @@ export default function IntroSection() {
         <Text variant='small' as='p' className='pb-12'>
           SUMMER CLUB | RYAZAN | RUSSIA
         </Text>
-        <a className='text-3xl cursor-pointer pb-36'>MORE ABOUT ME</a>
+        <AnimateButton variant='light'>MORE ABOUT ME</AnimateButton>
+        {/* <a className='text-3xl cursor-pointer pb-36'>MORE ABOUT ME</a> */}
       </div>
     </div>
   );

@@ -2,9 +2,13 @@ import lottie, { AnimationConfig, AnimationItem } from 'lottie-web';
 import { ForwardedRef, forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import { Nullable } from '../../types/utils';
 
+interface Animation extends AnimationItem {
+  frameModifier: number;
+}
+
 export type LottieControl = {
   container: Nullable<HTMLDivElement>;
-  animation: Nullable<AnimationItem>;
+  animation: Nullable<Animation>;
 };
 
 interface BaseLottieProps extends Omit<AnimationConfig, 'container'> {
@@ -15,7 +19,7 @@ interface BaseLottieProps extends Omit<AnimationConfig, 'container'> {
 
 // ToDo What do frameModifier and frameMult
 function BaseLottie({ className, forwardRef, ...animationConfig }: BaseLottieProps) {
-  const animationRef = useRef<Nullable<AnimationItem>>(null);
+  const animationRef = useRef<Nullable<Animation>>(null);
   const containerRef = useRef<Nullable<HTMLDivElement>>(null);
 
   useImperativeHandle(
@@ -34,7 +38,7 @@ function BaseLottie({ className, forwardRef, ...animationConfig }: BaseLottiePro
         loop: false,
         autoplay: false,
         ...animationConfig,
-      });
+      }) as Animation;
     }
   }, []);
 

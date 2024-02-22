@@ -1,5 +1,5 @@
-import { motion, Variant, Variants } from 'framer-motion';
 import Text from '../../components/Text';
+import AnimateButton from '../../components/AnimateButton';
 
 export default function Footer() {
   return (
@@ -25,14 +25,9 @@ export default function Footer() {
             if you’ve got a story that needs to be told, please get in touch!
           </Text>
           <p className='font-editorial text-[0.7vw]'>I can't wait to hear from you</p>
-          <motion.div
-            whileHover='hover'
-            initial='initial'
-            className='absolute bottom-4 right-4 overflow-hidden'
-          >
-            <div className='text-3xl cursor-pointer'>Copy email address</div>
-            <motion.div variants={arrowMotion} className='h-[2px] w-full bg-olive-900' />
-          </motion.div>
+          <AnimateButton variant='dark' className='absolute bottom-4 right-4'>
+            Copy email address
+          </AnimateButton>
         </div>
         <div className='relative'>
           <div
@@ -51,20 +46,3 @@ export default function Footer() {
     </footer>
   );
 }
-
-const arrowMotion: Variants = {
-  initial: {
-    x: 0,
-    transition: {
-      duration: 0.3,
-      ease: 'easeIn',
-    },
-  },
-  hover: {
-    x: '100%',
-    transition: {
-      duration: 0.3,
-      ease: 'easeIn',
-    },
-  },
-};

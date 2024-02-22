@@ -12,7 +12,6 @@ import {
 import useScroll from '../../hooks/useScroll';
 import useWindowSize from '../../hooks/useWindowSize';
 import Lenis from '@studio-freight/lenis';
-import { Nullable } from '../../types/utils';
 import { useRect } from '@studio-freight/hamo';
 import { clamp, mapRange } from '../../utils/math';
 
@@ -56,14 +55,24 @@ function createUserScroll<T extends HTMLElement>(
 ) {
   return configurations.map((configuration) => (lenis: Lenis) => {
     const node = ref.current;
+    const scroll = lenis.scroll;
 
     if (!node) return;
 
     const start = configuration.getStart(node, position, meta);
     const end = configuration.getEnd(node, position, meta);
-
     const [mapToStart, mapToEnd, reverseStart = mapToStart, reverseEnd = mapToEnd] =
       configuration.mapTo;
+
+    if (scroll < start) {
+      configuration.mutate(node, reverseStart);
+      return;
+    }
+    if (scroll > end) {
+      configuration.mutate(node, reverseEnd);
+
+      return;
+    }
 
     const fraction = mapRange(start, end, lenis.scroll, 0, 1);
     // console.log(fraction);
