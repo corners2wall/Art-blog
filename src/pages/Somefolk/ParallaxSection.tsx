@@ -1,15 +1,48 @@
 import { Variants, motion } from 'framer-motion';
 import Text from '../../components/Text';
+import {
+  ScrollConfiguration,
+  BaseScrollable as Scrollable,
+} from '../../components/Scrollable/Scrollable';
 
 /// shadow opacity = 0.65 -> 0.95
 /// image translateY => -20 -> 0
 
+const imageTranslate = '--imageTranslate';
+
+const opacity = '--opacity';
+
+const scroll: ScrollConfiguration<HTMLDivElement>[] = [
+  {
+    getStart: (node, position, meta) => position.top - meta.windowHeight,
+    getEnd: (node, position, meta) => position.top + position.height,
+    mapTo: [-15, 15],
+    mutate: (node, value) => node.style.setProperty(imageTranslate, `${value}%`),
+  },
+  {
+    getStart: (node, position, meta) => position.top - meta.windowHeight,
+    getEnd: (node, position, meta) => position.top + position.height,
+    mapTo: [0, 0.2],
+    mutate: (node, value) => node.style.setProperty(opacity, `${0.8 + value}`),
+  },
+];
+
 export default function ParallaxSection() {
   return (
-    <section className='pt-60 pb-24 flex items-center justify-center relative overflow-hidden'>
+    <Scrollable
+      className='pt-60 pb-24 flex items-center justify-center relative overflow-hidden'
+      configuration={scroll}
+    >
       <div className='absolute h-[115%] w-[115%]'>
-        <img src='images/greenFlex.jpg' className='w-full h-full object-cover' />
-        <div className='opacity-80 bg-black bg-opacity-60 absolute h-full w-full z-10 top-0' />
+        <img
+          src='images/greenFlex.jpg'
+          className='w-full h-full object-cover'
+          style={{ transform: `translateY(var(${imageTranslate}))` }}
+        />
+        <div
+          className='opacity-80 bg-black bg-opacity-80 absolute h-full w-full z-10 top-0'
+          style={{ opacity: `var(${opacity})` }}
+        />
       </div>
       <div className='z-10 w-full flex flex-col items-center'>
         <div className='w-2/3 text-center'>
@@ -99,7 +132,7 @@ export default function ParallaxSection() {
           <Text variant='medium-bold'>RESULTS</Text>
         </div>
       </div>
-    </section>
+    </Scrollable>
   );
 }
 

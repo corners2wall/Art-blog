@@ -22,7 +22,7 @@ interface Position {
   left: number;
 }
 
-type CalcValue<T> = (node: T, position: Position, meta: MetaInformation) => number;
+export type CalcValue<T> = (element: T, position: Position, meta: MetaInformation) => number;
 
 interface MetaInformation {
   windowHeight: number;

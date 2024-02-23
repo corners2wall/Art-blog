@@ -87,7 +87,15 @@ export default function IntroSection() {
           <Text variant='medium'>BRAND STRATEGY</Text>
           <Text variant='medium'>TYPOGRAPHY</Text>
         </div>
-        <ScrollableLottie className='h-1/2 w-1/2' path='/lottie/fallingMan.json' />
+        <ScrollableLottie
+          className='h-1/2 w-1/2'
+          path='/lottie/fallingMan.json'
+          scrollConfiguration={{
+            getStart: (animation, position) => position.top * 1.1,
+            getEnd: (animation, position, meta) =>
+              position.top + position.height + meta.windowHeight,
+          }}
+        />
         <div className='flex flex-col items-center pb-20'>
           <Text variant='small'>DEVELOPING DIGITAL PRODUCTS</Text>
           <Text variant='medium'>ART DIRECTION</Text>

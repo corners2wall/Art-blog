@@ -1,5 +1,9 @@
 import Text from '../../components/Text';
 import ScrollableLottie from '../../components/Lottie/ScrollableLottie';
+import {
+  BaseScrollable as Scrollable,
+  ScrollConfiguration,
+} from '../../components/Scrollable/Scrollable';
 
 export default function WalkingSection() {
   return (
@@ -20,12 +24,14 @@ export default function WalkingSection() {
       <Text variant='medium-large' as='h2' className='mt-[18vh]'>
         WORKING WITH STARTUPS & SMES TO CREATE MEMORABLE BRANDS
       </Text>
-      {/* <Lottie
+      <ScrollableLottie
         className='h-1/3 w-1/2 mt-[-8vw]'
         path='/lottie/walkingMan.json'
-        // forwardRef={setNodeRef}
-      /> */}
-      {/* <WalkingLottieAnimation /> */}
+        scrollConfiguration={{
+          getStart: (animation, position) => position.top,
+          getEnd: (animation, position, meta) => position.top + position.height + meta.windowHeight,
+        }}
+      />
       <Text variant='medium-large' as='h2' className='mt-[-3.5vh]'>
         & HIGHLY BESPOKE WEBSITES
       </Text>
@@ -41,7 +47,7 @@ export default function WalkingSection() {
         <Text variant='small'>AND</Text>
         <Text variant='medium-bold'>AMBITIONS</Text>
       </div>
-      <div className='flex gap-2 items-center'>
+      <div className='flex gap-2 items-center mb-72'>
         <Text variant='small'>THAT HELP</Text>
         <Text variant='medium-bold'>DISRUPTORS</Text>
         <Text variant='small'>TO</Text>
@@ -49,18 +55,21 @@ export default function WalkingSection() {
         <Text variant='small'>THE</Text>
         <Text variant='medium-bold'>NOISE</Text>
       </div>
-      <div className='flex mt-60'>
+      <Scrollable className='flex' configuration={scroll}>
         <div className='flex flex-col w-[20vw] translate-x-12 translate-y-12 relative'>
           <div className='absolute -left-3 -bottom-14 w-1/3 h-1/3'>
             <img src='world.svg' className='w-full h-full' />
           </div>
-          <div className='relative -rotate-[16deg] rounded-md overflow-hidden pt-[125%]'>
+          <div
+            className='relative  rounded-md overflow-hidden pt-[125%]'
+            style={{ transform: `translateY(var(${offsetY})) rotate(-16deg)` }}
+          >
             <div className='absolute h-full w-full top-0 left-0'>
               <img src='images/leo.jpg' className='w-full h-full object-cover grayscale-[50%]' />
             </div>
           </div>
         </div>
-        <div className='flex flex-col w-[20vw] -translate-y-32'>
+        <div className='flex flex-col w-[20vw] -translate-y-32 '>
           <div className='absolute -right-24 -bottom-56 w-full h-full'>
             <img src='address.svg' className='w-full h-full' />
           </div>
@@ -73,43 +82,31 @@ export default function WalkingSection() {
             </div>
           </div>
         </div>
-        <div className='flex flex-col w-[20vw] translate-y-12 relative'>
-          <div className='absolute -right-12 -top-20 w-1/2 h-1/2'>
+        <div className='flex flex-col w-[20vw] relative'>
+          <div className='absolute -right-14 -top-20 w-1/2 h-1/2'>
             <img src='founded.svg' className='w-full h-full' />
           </div>
-          <div className='relative rotate-[24deg] rounded-md overflow-hidden pt-[125%]'>
+          <div
+            className='relative rounded-md overflow-hidden pt-[125%]'
+            style={{ transform: `translateY(var(${offsetY})) rotate(12deg)` }}
+          >
             <div className='absolute top-0 left-0 h-full w-full grayscale-[50%]'>
               <img src='images/monkey.jpg' className='w-full h-full object-cover' />
             </div>
           </div>
         </div>
-      </div>
+      </Scrollable>
     </section>
   );
 }
 
-function WalkingLottieAnimation() {
-  // const [initPositionRef, setNodeRef] = useNodeInitialPosition<HTMLDivElement>();
-  // const { windowHeight } = useWindowSize();
-  // const walkingAnimation = '--walkingAnimation';
+const offsetY = '--offsetY';
 
-  // const animateLottie = ({ scroll }: Lenis) => {
-  //   if (!initPositionRef.current) return;
-
-  //   const start = initPositionRef.current.top;
-  //   const end = initPositionRef.current.bottom;
-
-  //   const progress = clamp(0, mapRange(start, end, scroll + windowHeight, 0, 120), 120);
-  //   console.log(progress);
-  // };
-
-  // useScroll(animateLottie, [animateLottie]);
-
-  return (
-    <ScrollableLottie
-      className='h-1/3 w-1/2 mt-[-8vw]'
-      path='/lottie/walkingMan.json'
-      // forwardRef={setNodeRef}
-    />
-  );
-}
+const scroll: ScrollConfiguration<HTMLDivElement>[] = [
+  {
+    getStart: (node, position, meta) => position.top - meta.windowHeight,
+    getEnd: (node, position, meta) => position.top + position.height,
+    mapTo: [-6, 0, 0, -6],
+    mutate: (node, value) => node.style.setProperty(offsetY, `${value}rem`),
+  },
+];

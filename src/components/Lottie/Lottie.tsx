@@ -2,7 +2,7 @@ import lottie, { AnimationConfig, AnimationItem } from 'lottie-web';
 import { ForwardedRef, forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import { Nullable } from '../../types/utils';
 
-interface Animation extends AnimationItem {
+export interface Animation extends AnimationItem {
   frameModifier: number;
 }
 
