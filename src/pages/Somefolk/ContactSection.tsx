@@ -1,8 +1,23 @@
 import { Variants, motion } from 'framer-motion';
 import Text from '../../components/Text';
-import { HTMLInputTypeAttribute, InputHTMLAttributes } from 'react';
+import { HTMLInputTypeAttribute } from 'react';
+import {
+  ScrollConfiguration,
+  BaseScrollable as Scrollable,
+} from '../../components/Scrollable/Scrollable';
 
 // image -20 -> 0
+
+const offsetImage = '--offsetImage';
+
+const imageScrollConfiguration: ScrollConfiguration<HTMLDivElement>[] = [
+  {
+    getStart: (node, position, meta) => position.top - meta.windowHeight,
+    getEnd: (node, position, meta) => position.top + position.height + meta.windowHeight,
+    mapTo: [-20, 15],
+    mutate: (node, value) => node.style.setProperty(offsetImage, `${value}%`),
+  },
+];
 
 export default function ContactSection() {
   return (
@@ -32,9 +47,16 @@ export default function ContactSection() {
           </motion.button>
         </form>
       </div>
-      <div className='w-1/2 rounded-md overflow-hidden'>
-        <img src='images/gang.jpg' className='w-full h-[120%] object-cover' />
-      </div>
+      <Scrollable
+        className='w-1/2 rounded-md overflow-hidden'
+        configuration={imageScrollConfiguration}
+      >
+        <img
+          src='images/gang.jpg'
+          className='w-full h-[120%] object-cover'
+          style={{ transform: `translateY(var(${offsetImage}))` }}
+        />
+      </Scrollable>
     </section>
   );
 }

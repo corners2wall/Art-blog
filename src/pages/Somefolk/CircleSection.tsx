@@ -21,6 +21,26 @@ const circleParts = [
 
 const offsetCSS = '--circleXOffset';
 const spinCSS = '--spin';
+const offsetImage1 = '--offsetImage1';
+const offsetImage2 = '--offsetImage2';
+
+const image1ScrollConfiguration: ScrollConfiguration<HTMLDivElement>[] = [
+  {
+    getStart: (node, position, meta) => position.top - meta.windowHeight,
+    getEnd: (node, position, meta) => position.top + position.height + meta.windowHeight,
+    mapTo: [-20, 15],
+    mutate: (node, value) => node.style.setProperty(offsetImage1, `${value}%`),
+  },
+];
+
+const image2ScrollConfiguration: ScrollConfiguration<HTMLDivElement>[] = [
+  {
+    getStart: (node, position, meta) => position.top - meta.windowHeight,
+    getEnd: (node, position, meta) => position.top + position.height + meta.windowHeight,
+    mapTo: [-20, 15],
+    mutate: (node, value) => node.style.setProperty(offsetImage2, `${value}%`),
+  },
+];
 
 export default function CircleSection() {
   return (
@@ -50,12 +70,16 @@ export default function CircleSection() {
             FOR COLLABORATIONS IN THE FINAL QUARTER OF 2023.
           </Text>
           <div className='w-full my-32'>
-            <div className='pt-[125%] relative overflow-hidden'>
+            <Scrollable
+              className='pt-[125%] relative overflow-hidden'
+              configuration={image1ScrollConfiguration}
+            >
               <img
                 src='images/pinkFlex.jpg'
                 className='absolute top-0 h-[120%] bg-no-repeat bg-cover'
+                style={{ transform: `translateY(var(${offsetImage1}))` }}
               />
-            </div>
+            </Scrollable>
           </div>
           <Text variant='medium' as='h4' className='mb-8'>
             RECOGNITION
@@ -79,12 +103,16 @@ export default function CircleSection() {
           <div className='h-[1px] w-full bg-olive-100 my-2' />
           <Text variant='small-bold'>CSS SITE OF THE DAY X3</Text>
           <div className='w-full my-32'>
-            <div className='pt-[125%] relative overflow-hidden'>
+            <Scrollable
+              className='pt-[125%] relative overflow-hidden'
+              configuration={image2ScrollConfiguration}
+            >
               <img
                 src='images/monkey.jpg'
                 className='absolute top-0 h-[120%] bg-no-repeat bg-cover'
+                style={{ transform: `translateY(var(${offsetImage2}))` }}
               />
-            </div>
+            </Scrollable>
           </div>
           <Text variant='medium' as='h4' className='mb-8'>
             SOCIAL INACTIVITY
